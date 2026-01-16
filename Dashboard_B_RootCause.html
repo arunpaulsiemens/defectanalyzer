@@ -394,7 +394,13 @@
         
         /* Dynamic font sizing */
         html {
-            font-size: clamp(12px, 1.1vw, 16px);
+            font-size: clamp(10px, 1vw, 16px);
+        }
+        
+        /* Prevent horizontal overflow */
+        body {
+            overflow-x: hidden;
+            max-width: 100vw;
         }
         
         /* Large screens (1400px+) */
@@ -403,125 +409,132 @@
         }
         
         /* Medium-large screens (1200px - 1400px) */
-        @media (max-width: 1400px) and (min-width: 1200px) {
-            html { font-size: 14px; }
-            .header { padding: 10px 20px; }
-            .header h1 { font-size: 1.2em; }
-            .header-info { gap: 15px; font-size: 0.75em; }
-            .tab { padding: 12px 22px; }
-            .content-grid { grid-template-columns: 280px 1fr; gap: 12px; }
-        }
-        
-        /* Medium screens / Small laptops (992px - 1200px) */
-        @media (max-width: 1200px) and (min-width: 992px) {
+        @media (max-width: 1400px) {
             html { font-size: 13px; }
             .header { padding: 10px 15px; }
-            .header h1 { font-size: 1.1em; }
-            .header-info { gap: 12px; font-size: 0.7em; }
-            .tab { padding: 10px 18px; font-size: 0.85em; }
-            .tab-content { padding: 12px; }
-            .content-grid { 
-                grid-template-columns: 250px 1fr; 
-                gap: 10px;
-                height: auto;
-                min-height: calc(100vh - 140px);
-            }
-            .pie-section { padding: 12px; }
-            .matrix-section { padding: 12px; }
+            .header h1 { font-size: 1.15em; }
+            .header-info { gap: 12px; font-size: 0.72em; }
+            .tab { padding: 10px 18px; font-size: 0.88em; }
+            .content-grid { grid-template-columns: 260px 1fr; gap: 12px; }
         }
         
-        /* Tablets / Very small laptops (768px - 992px) */
-        @media (max-width: 992px) {
+        /* Small laptops - CRITICAL (1024px - 1200px) */
+        @media (max-width: 1200px) {
             html { font-size: 12px; }
+            .header { padding: 8px 12px; flex-wrap: wrap; gap: 6px; }
+            .header h1 { font-size: 1.05em; }
+            .header-info { gap: 10px; font-size: 0.68em; flex-wrap: wrap; justify-content: center; }
+            .tab { padding: 8px 14px; font-size: 0.82em; }
+            .tab-content { padding: 10px; }
+            .content-grid { 
+                grid-template-columns: 220px 1fr; 
+                gap: 10px;
+                height: auto;
+                min-height: calc(100vh - 130px);
+            }
+            .pie-section { padding: 10px; }
+            .matrix-section { padding: 10px; }
+        }
+        
+        /* Very small laptops (900px - 1024px) */
+        @media (max-width: 1024px) {
+            html { font-size: 11px; }
             
             .header { 
-                padding: 10px 12px; 
                 flex-direction: column; 
                 text-align: center;
-                gap: 8px;
+                padding: 8px 10px;
             }
             .header h1 { font-size: 1em; }
-            .header p { font-size: 0.7em !important; }
             .header-info { 
-                flex-wrap: wrap; 
                 justify-content: center; 
-                gap: 6px 12px; 
-                font-size: 0.65em; 
+                gap: 6px 10px; 
+                font-size: 0.65em;
             }
             
-            .tabs { flex-wrap: wrap; justify-content: center; padding: 0 10px; }
-            .tab { padding: 10px 15px; font-size: 0.8em; flex: 1 1 auto; text-align: center; }
+            .tabs { flex-wrap: wrap; justify-content: center; padding: 0 8px; }
+            .tab { padding: 8px 12px; font-size: 0.78em; }
             
-            .tab-content { padding: 10px; }
-            
+            /* Stack layout for small screens */
             .content-grid { 
                 grid-template-columns: 1fr !important;
                 height: auto !important;
-                min-height: auto;
             }
             
             .pie-section {
-                max-height: 350px;
+                max-height: 320px;
             }
             
             .matrix-section {
-                min-height: 400px;
+                min-height: 380px;
             }
+        }
+        
+        /* Tablets (768px - 900px) */
+        @media (max-width: 900px) {
+            html { font-size: 10px; }
+            
+            .header { padding: 6px 8px; }
+            .header h1 { font-size: 0.95em; }
+            .header p { font-size: 0.65em !important; }
+            .header-info { font-size: 0.6em; gap: 5px 8px; }
+            
+            .tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; flex-wrap: nowrap; }
+            .tab { padding: 6px 10px; font-size: 0.72em; white-space: nowrap; }
+            
+            .tab-content { padding: 8px; }
             
             .pareto-container {
-                padding: 15px;
+                padding: 12px;
             }
             
             .confidence-legend {
                 flex-wrap: wrap;
-                gap: 10px 20px;
-                padding: 10px 15px;
+                gap: 8px 15px;
+                padding: 8px 12px;
             }
         }
         
         /* Mobile (below 768px) */
         @media (max-width: 768px) {
-            html { font-size: 11px; }
+            html { font-size: 10px; }
             
-            .header { padding: 8px 10px; }
-            .header h1 { font-size: 0.95em; }
-            .header-info { font-size: 0.6em; gap: 5px 8px; }
+            .header { padding: 6px 8px; }
+            .header h1 { font-size: 0.9em; }
+            .header-info { font-size: 0.58em; gap: 4px 6px; }
             
-            .tabs { overflow-x: auto; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; }
-            .tab { padding: 8px 12px; font-size: 0.75em; white-space: nowrap; }
-            
-            .tab-content { padding: 8px; }
+            .tab-content { padding: 6px; }
             
             .pie-section, .matrix-section {
-                padding: 10px;
-                border-radius: 12px;
+                padding: 8px;
+                border-radius: 10px;
             }
             
             .pie-title, .matrix-title {
-                font-size: 0.85em;
+                font-size: 0.8em;
             }
             
             .modal-content {
-                padding: 15px;
-                max-width: 95%;
-                max-height: 90vh;
+                padding: 12px;
+                max-width: 96%;
+                max-height: 92vh;
             }
             
             .bug-table th, .bug-table td {
-                padding: 6px 5px;
-                font-size: 10px;
+                padding: 5px 4px;
+                font-size: 9px;
             }
             
-            .footer { padding: 10px; font-size: 0.65em; }
+            .footer { padding: 8px; font-size: 0.6em; }
             
             .confidence-legend {
                 flex-direction: column;
                 align-items: center;
-                gap: 8px;
+                gap: 6px;
             }
             
             .conf-item {
-                font-size: 0.75em;
+                font-size: 0.7em;
             }
         }
         
@@ -530,17 +543,23 @@
             .header h1 { font-size: 0.85em; }
             
             .tabs { justify-content: flex-start; }
-            .tab { min-width: 100px; }
+            .tab { min-width: 90px; }
             
             .methodology-box {
-                padding: 10px 12px;
-                font-size: 0.75em;
+                padding: 8px 10px;
+                font-size: 0.7em;
             }
             
             .insight-box {
-                padding: 10px 12px;
-                font-size: 0.75em;
+                padding: 8px 10px;
+                font-size: 0.7em;
             }
+        }
+        
+        /* Ensure Plotly charts resize */
+        .js-plotly-plot, .plotly {
+            width: 100% !important;
+            max-width: 100% !important;
         }
     </style>
 </head>
