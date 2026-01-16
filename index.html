@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DefectAnalyzer - Siemens PCS7 Telecontrol</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            background: rgba(0,0,0,0.3);
+            padding: 30px 50px;
+            border-bottom: 3px solid #00d4ff;
+            text-align: center;
+        }
+        
+        .header h1 {
+            color: #00d4ff;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px rgba(0,212,255,0.5);
+        }
+        
+        .header p {
+            color: #888;
+            font-size: 1.1em;
+        }
+        
+        .container {
+            flex: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 30px;
+            width: 100%;
+        }
+        
+        .hero-section {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .hero-section h2 {
+            font-size: 2em;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+        
+        .hero-section .subtitle {
+            font-size: 1.2em;
+            color: #888;
+            margin-bottom: 30px;
+        }
+        
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .dashboard-card {
+            background: rgba(255,255,255,0.05);
+            border: 2px solid rgba(0,212,255,0.3);
+            border-radius: 20px;
+            padding: 40px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .dashboard-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #00d4ff, #7c3aed);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+        
+        .dashboard-card:hover {
+            transform: translateY(-10px);
+            border-color: #00d4ff;
+            box-shadow: 0 15px 40px rgba(0,212,255,0.3);
+        }
+        
+        .dashboard-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .dashboard-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+        
+        .dashboard-title {
+            font-size: 1.8em;
+            color: #00d4ff;
+            margin-bottom: 15px;
+        }
+        
+        .dashboard-description {
+            color: #aaa;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .dashboard-features {
+            list-style: none;
+            margin: 20px 0;
+            padding: 0;
+        }
+        
+        .dashboard-features li {
+            padding: 8px 0;
+            color: #888;
+            display: flex;
+            align-items: center;
+        }
+        
+        .dashboard-features li::before {
+            content: '✓';
+            color: #2ecc71;
+            font-weight: bold;
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+        
+        .btn-launch {
+            display: inline-block;
+            background: linear-gradient(135deg, #00d4ff, #7c3aed);
+            color: white;
+            padding: 15px 40px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        
+        .btn-launch:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(0,212,255,0.4);
+        }
+        
+        .config-section {
+            background: rgba(255,255,255,0.05);
+            border: 2px solid rgba(155,89,182,0.3);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .config-section h3 {
+            color: #9b59b6;
+            font-size: 1.8em;
+            margin-bottom: 15px;
+        }
+        
+        .config-section p {
+            color: #aaa;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+        
+        .btn-config {
+            display: inline-block;
+            background: linear-gradient(135deg, #9b59b6, #e74c3c);
+            color: white;
+            padding: 15px 40px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-config:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(155,89,182,0.4);
+        }
+        
+        .footer {
+            background: rgba(0,0,0,0.3);
+            padding: 30px;
+            text-align: center;
+            color: #666;
+            border-top: 1px solid #333;
+        }
+        
+        .footer p {
+            margin: 5px 0;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            background: rgba(46,204,113,0.2);
+            color: #2ecc71;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 0.9em;
+            margin-left: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .container {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📊 DefectAnalyzer</h1>
+        <p>Siemens PCS7 Telecontrol - Advanced Defect Analysis Platform</p>
+    </div>
+    
+    <div class="container">
+        <div class="hero-section">
+            <h2>Interactive Defect Analysis Dashboards</h2>
+            <p class="subtitle">Real-time insights with embedded sample data from 205 defects analyzed</p>
+            <span class="status-badge">🟢 Live & Ready</span>
+        </div>
+        
+        <div class="dashboard-cards">
+            <!-- Dashboard A -->
+            <div class="dashboard-card" onclick="window.location.href='Dashboard_A_Overview.html'">
+                <div class="dashboard-icon">📊</div>
+                <h3 class="dashboard-title">Dashboard A: Overview & Analytics</h3>
+                <p class="dashboard-description">
+                    Comprehensive metrics dashboard featuring quick-win KPIs, trend forecasting, and multi-dimensional analysis.
+                </p>
+                <ul class="dashboard-features">
+                    <li>Escape Rate & Aging Analysis</li>
+                    <li>Backlog Forecasting (6-month projection)</li>
+                    <li>Category Pareto Charts (80/20 rule)</li>
+                    <li>Area vs Category Heatmaps</li>
+                    <li>SDLC & Test Phase Dimensions</li>
+                    <li>Risk Scoring & Model Confidence</li>
+                </ul>
+                <a href="Dashboard_A_Overview.html" class="btn-launch">Launch Dashboard A →</a>
+            </div>
+            
+            <!-- Dashboard B -->
+            <div class="dashboard-card" onclick="window.location.href='Dashboard_B_RootCause.html'">
+                <div class="dashboard-icon">🔍</div>
+                <h3 class="dashboard-title">Dashboard B: Root Cause Analysis</h3>
+                <p class="dashboard-description">
+                    Deep-dive root cause analysis using ODC (Orthogonal Defect Classification) and IEEE methodologies.
+                </p>
+                <ul class="dashboard-features">
+                    <li>ODC × IEEE Classification Matrix</li>
+                    <li>Root Cause Pareto Analysis</li>
+                    <li>Interactive Category Filtering</li>
+                    <li>Drill-down Bug Details (168 bugs)</li>
+                    <li>CSV Export Capabilities</li>
+                    <li>Industry-Standard Taxonomies</li>
+                </ul>
+                <a href="Dashboard_B_RootCause.html" class="btn-launch">Launch Dashboard B →</a>
+            </div>
+        </div>
+        
+        <div class="config-section">
+            <h3>🔧 Configure Live Data Connection</h3>
+            <p>
+                Want to analyze YOUR TFS/Azure DevOps data? Configure your connection to pull live defects from your project.
+                <br><br>
+                <strong>Note:</strong> Configuration requires Python setup. The dashboards above work standalone with embedded sample data.
+            </p>
+            <a href="DefectAnalyzer_Config.html" class="btn-config">Configure TFS Connection →</a>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p><strong>DefectAnalyzer v4.0</strong> | Siemens PCS7 Telecontrol</p>
+        <p>Generated: January 16, 2026 | Sample Data: 205 Defects (Severity 2 & 3)</p>
+        <p style="margin-top: 15px; font-size: 0.9em;">
+            📈 Powered by Plotly.js | 🤖 LLM-Enhanced Classification | 📊 Industry Best Practices
+        </p>
+    </div>
+</body>
+</html>
