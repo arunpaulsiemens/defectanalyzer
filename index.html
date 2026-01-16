@@ -7,6 +7,10 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
+        html {
+            font-size: clamp(12px, 1.2vw, 16px);
+        }
+        
         body {
             font-family: 'Segoe UI', Tahoma, sans-serif;
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
@@ -18,60 +22,60 @@
         
         .header {
             background: rgba(0,0,0,0.3);
-            padding: 30px 50px;
+            padding: clamp(15px, 3vh, 30px) clamp(20px, 4vw, 50px);
             border-bottom: 3px solid #00d4ff;
             text-align: center;
         }
         
         .header h1 {
             color: #00d4ff;
-            font-size: 2.5em;
+            font-size: clamp(1.5em, 4vw, 2.5em);
             margin-bottom: 10px;
             text-shadow: 0 0 20px rgba(0,212,255,0.5);
         }
         
         .header p {
             color: #888;
-            font-size: 1.1em;
+            font-size: clamp(0.85em, 1.5vw, 1.1em);
         }
         
         .container {
             flex: 1;
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 60px 30px;
+            padding: clamp(20px, 4vh, 60px) clamp(15px, 3vw, 30px);
             width: 100%;
         }
         
         .hero-section {
             text-align: center;
-            margin-bottom: 60px;
+            margin-bottom: clamp(30px, 5vh, 60px);
         }
         
         .hero-section h2 {
-            font-size: 2em;
+            font-size: clamp(1.3em, 3vw, 2em);
             margin-bottom: 15px;
             color: #fff;
         }
         
         .hero-section .subtitle {
-            font-size: 1.2em;
+            font-size: clamp(0.9em, 1.5vw, 1.2em);
             color: #888;
-            margin-bottom: 30px;
+            margin-bottom: clamp(15px, 2vh, 30px);
         }
         
         .dashboard-cards {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
-            gap: 30px;
-            margin-bottom: 50px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: clamp(15px, 2vw, 30px);
+            margin-bottom: clamp(25px, 4vh, 50px);
         }
         
         .dashboard-card {
             background: rgba(255,255,255,0.05);
             border: 2px solid rgba(0,212,255,0.3);
-            border-radius: 20px;
-            padding: 40px;
+            border-radius: clamp(12px, 1.5vw, 20px);
+            padding: clamp(20px, 3vw, 40px);
             transition: all 0.3s ease;
             cursor: pointer;
             position: relative;
@@ -91,9 +95,9 @@
         }
         
         .dashboard-card:hover {
-            transform: translateY(-10px);
+            transform: translateY(-5px);
             border-color: #00d4ff;
-            box-shadow: 0 15px 40px rgba(0,212,255,0.3);
+            box-shadow: 0 10px 30px rgba(0,212,255,0.3);
         }
         
         .dashboard-card:hover::before {
@@ -101,54 +105,56 @@
         }
         
         .dashboard-icon {
-            font-size: 3em;
-            margin-bottom: 20px;
+            font-size: clamp(2em, 4vw, 3em);
+            margin-bottom: clamp(10px, 1.5vh, 20px);
         }
         
         .dashboard-title {
-            font-size: 1.8em;
+            font-size: clamp(1.1em, 2vw, 1.8em);
             color: #00d4ff;
-            margin-bottom: 15px;
+            margin-bottom: clamp(8px, 1vh, 15px);
         }
         
         .dashboard-description {
             color: #aaa;
             line-height: 1.6;
-            margin-bottom: 20px;
+            margin-bottom: clamp(10px, 1.5vh, 20px);
+            font-size: clamp(0.85em, 1.1vw, 1em);
         }
         
         .dashboard-features {
             list-style: none;
-            margin: 20px 0;
+            margin: clamp(10px, 1.5vh, 20px) 0;
             padding: 0;
         }
         
         .dashboard-features li {
-            padding: 8px 0;
+            padding: clamp(4px, 0.5vh, 8px) 0;
             color: #888;
             display: flex;
             align-items: center;
+            font-size: clamp(0.8em, 1vw, 1em);
         }
         
         .dashboard-features li::before {
             content: '✓';
             color: #2ecc71;
             font-weight: bold;
-            margin-right: 10px;
-            font-size: 1.2em;
+            margin-right: clamp(6px, 0.8vw, 10px);
+            font-size: 1.1em;
         }
         
         .btn-launch {
             display: inline-block;
             background: linear-gradient(135deg, #00d4ff, #7c3aed);
             color: white;
-            padding: 15px 40px;
+            padding: clamp(10px, 1.5vh, 15px) clamp(25px, 3vw, 40px);
             border-radius: 30px;
             text-decoration: none;
             font-weight: bold;
-            font-size: 1.1em;
+            font-size: clamp(0.9em, 1.2vw, 1.1em);
             transition: all 0.3s ease;
-            margin-top: 10px;
+            margin-top: clamp(5px, 1vh, 10px);
         }
         
         .btn-launch:hover {
@@ -159,32 +165,33 @@
         .config-section {
             background: rgba(255,255,255,0.05);
             border: 2px solid rgba(155,89,182,0.3);
-            border-radius: 20px;
-            padding: 40px;
+            border-radius: clamp(12px, 1.5vw, 20px);
+            padding: clamp(20px, 3vw, 40px);
             text-align: center;
         }
         
         .config-section h3 {
             color: #9b59b6;
-            font-size: 1.8em;
-            margin-bottom: 15px;
+            font-size: clamp(1.2em, 2vw, 1.8em);
+            margin-bottom: clamp(8px, 1vh, 15px);
         }
         
         .config-section p {
             color: #aaa;
-            margin-bottom: 25px;
+            margin-bottom: clamp(15px, 2vh, 25px);
             line-height: 1.6;
+            font-size: clamp(0.85em, 1.1vw, 1em);
         }
         
         .btn-config {
             display: inline-block;
             background: linear-gradient(135deg, #9b59b6, #e74c3c);
             color: white;
-            padding: 15px 40px;
+            padding: clamp(10px, 1.5vh, 15px) clamp(25px, 3vw, 40px);
             border-radius: 30px;
             text-decoration: none;
             font-weight: bold;
-            font-size: 1.1em;
+            font-size: clamp(0.9em, 1.2vw, 1.1em);
             transition: all 0.3s ease;
         }
         
@@ -195,7 +202,7 @@
         
         .footer {
             background: rgba(0,0,0,0.3);
-            padding: 30px;
+            padding: clamp(15px, 2vh, 30px);
             text-align: center;
             color: #666;
             border-top: 1px solid #333;
@@ -203,6 +210,7 @@
         
         .footer p {
             margin: 5px 0;
+            font-size: clamp(0.75em, 1vw, 0.9em);
         }
         
         .status-badge {
@@ -211,21 +219,117 @@
             color: #2ecc71;
             padding: 5px 15px;
             border-radius: 15px;
-            font-size: 0.9em;
+            font-size: clamp(0.75em, 1vw, 0.9em);
             margin-left: 10px;
         }
         
-        @media (max-width: 768px) {
+        /* Large screens (1400px+) */
+        @media (min-width: 1400px) {
+            html { font-size: 16px; }
+        }
+        
+        /* Medium-large screens (1200px - 1400px) */
+        @media (max-width: 1400px) {
+            .container { max-width: 100%; }
+        }
+        
+        /* Medium screens / Small laptops (900px - 1200px) */
+        @media (max-width: 1200px) {
+            .dashboard-cards {
+                gap: 20px;
+            }
+            .dashboard-card {
+                padding: 25px;
+            }
+        }
+        
+        /* Tablets / Very small laptops (768px - 900px) */
+        @media (max-width: 900px) {
             .dashboard-cards {
                 grid-template-columns: 1fr;
+                max-width: 600px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .dashboard-card {
+                padding: 30px;
+            }
+            .dashboard-features li {
+                font-size: 0.95em;
+            }
+        }
+        
+        /* Mobile (below 768px) */
+        @media (max-width: 768px) {
+            html { font-size: 14px; }
+            
+            .header {
+                padding: 20px 15px;
             }
             
             .header h1 {
-                font-size: 1.8em;
+                font-size: 1.6em;
             }
             
             .container {
-                padding: 30px 20px;
+                padding: 20px 15px;
+            }
+            
+            .hero-section {
+                margin-bottom: 25px;
+            }
+            
+            .hero-section h2 {
+                font-size: 1.4em;
+            }
+            
+            .dashboard-cards {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .dashboard-card {
+                padding: 20px;
+            }
+            
+            .dashboard-icon {
+                font-size: 2em;
+            }
+            
+            .dashboard-title {
+                font-size: 1.3em;
+            }
+            
+            .btn-launch, .btn-config {
+                padding: 12px 30px;
+                font-size: 1em;
+            }
+            
+            .config-section {
+                padding: 25px 20px;
+            }
+        }
+        
+        /* Small mobile (below 480px) */
+        @media (max-width: 480px) {
+            html { font-size: 13px; }
+            
+            .header h1 {
+                font-size: 1.4em;
+            }
+            
+            .dashboard-card {
+                padding: 18px;
+            }
+            
+            .dashboard-features li {
+                font-size: 0.9em;
+                padding: 5px 0;
+            }
+            
+            .btn-launch, .btn-config {
+                width: 100%;
+                text-align: center;
             }
         }
     </style>
