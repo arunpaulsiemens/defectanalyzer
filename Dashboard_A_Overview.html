@@ -360,6 +360,161 @@
             font-size: 0.85em;
             border-top: 1px solid #333;
         }
+        
+        /* ========== RESPONSIVE STYLES ========== */
+        
+        /* Dynamic font sizing */
+        html {
+            font-size: clamp(12px, 1.1vw, 16px);
+        }
+        
+        /* Large screens (1400px+) */
+        @media (min-width: 1400px) {
+            html { font-size: 16px; }
+        }
+        
+        /* Medium-large screens (1200px - 1400px) */
+        @media (max-width: 1400px) and (min-width: 1200px) {
+            html { font-size: 14px; }
+            .header { padding: 12px 20px; }
+            .header h1 { font-size: 1.3em; }
+            .header-info { gap: 15px; font-size: 0.8em; }
+            .tab { padding: 12px 20px; }
+        }
+        
+        /* Medium screens / Small laptops (992px - 1200px) */
+        @media (max-width: 1200px) and (min-width: 992px) {
+            html { font-size: 13px; }
+            .header { padding: 10px 15px; flex-wrap: wrap; gap: 10px; }
+            .header h1 { font-size: 1.2em; }
+            .header-info { gap: 12px; font-size: 0.75em; }
+            .tab { padding: 10px 15px; font-size: 0.85em; }
+            .tab-content { padding: 12px; }
+            #tab-overview.active { height: auto; min-height: calc(100vh - 140px); }
+        }
+        
+        /* Tablets / Very small laptops (768px - 992px) */
+        @media (max-width: 992px) {
+            html { font-size: 12px; }
+            
+            .header { 
+                padding: 10px 12px; 
+                flex-direction: column; 
+                text-align: center;
+                gap: 8px;
+            }
+            .header h1 { font-size: 1.1em; }
+            .header-info { 
+                flex-wrap: wrap; 
+                justify-content: center; 
+                gap: 8px 15px; 
+                font-size: 0.7em; 
+            }
+            
+            .tabs { flex-wrap: wrap; justify-content: center; }
+            .tab { padding: 8px 12px; font-size: 0.8em; flex: 1 1 auto; text-align: center; min-width: 120px; }
+            
+            .tab-content { padding: 10px; }
+            #tab-overview.active { height: auto; min-height: auto; }
+            
+            .metric-card { padding: 8px !important; }
+            .metric-value { font-size: 1.5em !important; }
+            .metric-label { font-size: 0.65em !important; }
+            .metric-trend { font-size: 0.6em !important; padding: 3px 8px !important; }
+            
+            .chart-card { padding: 10px !important; border-radius: 10px !important; }
+        }
+        
+        /* Mobile (below 768px) */
+        @media (max-width: 768px) {
+            html { font-size: 11px; }
+            
+            .header { padding: 8px 10px; }
+            .header h1 { font-size: 1em; }
+            .header p { font-size: 0.7em !important; }
+            .header-info { font-size: 0.65em; gap: 6px 10px; }
+            
+            .tabs { overflow-x: auto; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; }
+            .tab { padding: 8px 10px; font-size: 0.75em; white-space: nowrap; min-width: auto; }
+            
+            .tab-content { padding: 8px; }
+            
+            .footer { padding: 12px; font-size: 0.7em; }
+        }
+        
+        /* Responsive grid overrides for KPI cards */
+        @media (max-width: 1400px) {
+            #tab-overview > div:first-child {
+                gap: 8px !important;
+            }
+        }
+        
+        @media (max-width: 1200px) {
+            #tab-overview > div:first-child {
+                grid-template-columns: repeat(5, 1fr) !important;
+                gap: 6px !important;
+            }
+            #tab-overview > div:nth-child(2) {
+                grid-template-columns: repeat(4, 1fr) !important;
+                gap: 8px !important;
+            }
+            #tab-overview > div:nth-child(3) {
+                grid-template-columns: 1fr 1fr !important;
+                gap: 8px !important;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            #tab-overview > div:first-child {
+                grid-template-columns: repeat(3, 1fr) !important;
+            }
+            #tab-overview > div:nth-child(2) {
+                grid-template-columns: repeat(2, 1fr) !important;
+            }
+            #tab-overview > div:nth-child(3) {
+                grid-template-columns: 1fr !important;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            #tab-overview > div:first-child {
+                grid-template-columns: repeat(2, 1fr) !important;
+            }
+            #tab-overview > div:nth-child(2) {
+                grid-template-columns: 1fr !important;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            #tab-overview > div:first-child {
+                grid-template-columns: 1fr !important;
+            }
+        }
+        
+        /* Pareto tab responsive */
+        @media (max-width: 992px) {
+            #tab-pareto > div > div:last-child {
+                grid-template-columns: 1fr !important;
+            }
+        }
+        
+        /* Heatmap tab responsive */
+        @media (max-width: 992px) {
+            .heatmap-container {
+                height: auto !important;
+                min-height: calc(100vh - 150px);
+            }
+        }
+        
+        /* Dimensions tab responsive */
+        @media (max-width: 992px) {
+            .dimensions-bar {
+                flex-direction: column !important;
+            }
+            .dimension-chart {
+                min-height: 200px;
+            }
+        }
     </style>
 </head>
 <body>
