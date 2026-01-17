@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DefectAnalyzer - Root Cause Analysis (Consolidated)</title>
+    <script src="https://cdn.plot.ly/plotly-2.18.2.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #fff;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        .header {
+            background: rgba(0,0,0,0.3);
+            padding: 8px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(0,212,255,0.3);
+        }
+        .header h1 { color: #00d4ff; font-size: 1.1em; }
+        .header p { color: #888; font-size: 0.7em; margin-top: 1px; }
+        .header-stats { display: flex; gap: 15px; font-size: 0.75em; color: #888; }
+        .header-stats strong { color: #00d4ff; }
+        
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 4px;
+            padding: 8px 20px 0;
+            background: rgba(0,0,0,0.2);
+        }
+        .tab {
+            padding: 8px 18px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px 8px 0 0;
+            cursor: pointer;
+            font-size: 0.8em;
+            color: #888;
+            transition: all 0.2s;
+        }
+        .tab:hover { background: rgba(255,255,255,0.1); color: #fff; }
+        .tab.active {
+            background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(248,249,250,0.98));
+            color: #1a1a2e;
+            font-weight: 600;
+        }
+        
+        .tab-content { display: none; padding: 10px 15px; height: calc(100vh - 95px); overflow-y: auto; }
+        .tab-content.active { display: block; }
+        
+        /* Cards */
+        .card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.98), rgba(248,249,250,0.95));
+            border-radius: 12px;
+            padding: 12px;
+            color: #333;
+            box-shadow: 0 6px 25px rgba(0,0,0,0.2);
+        }
+        .card-title {
+            font-weight: 600;
+            color: #1a1a2e;
+            font-size: 0.85em;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        /* Section Divider */
+        .section-divider {
+            display: flex;
+            align-items: center;
+            margin: 12px 0;
+            gap: 10px;
+        }
+        .section-divider::before, .section-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(0,212,255,0.5), transparent);
+        }
+        .section-divider span {
+            color: #00d4ff;
+            font-weight: 600;
+            font-size: 0.75em;
+            white-space: nowrap;
+        }
+        
+        /* Grid layouts */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 12px;
+        }
+        .odc-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+        
+        /* Dynamic Insights Panel */
+        .insights-panel {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .insight-card {
+            padding: 10px 12px;
+            border-radius: 10px;
+            font-size: 0.8em;
+        }
+        .insight-card.red { background: linear-gradient(135deg, #fef2f2, #fee2e2); border-left: 4px solid #ef4444; }
+        .insight-card.green { background: linear-gradient(135deg, #f0fdf4, #dcfce7); border-left: 4px solid #22c55e; }
+        .insight-card.blue { background: linear-gradient(135deg, #eff6ff, #dbeafe); border-left: 4px solid #3b82f6; }
+        .insight-card h5 { margin-bottom: 5px; font-size: 0.75em; font-weight: 600; }
+        .insight-card.red h5 { color: #b91c1c; }
+        .insight-card.green h5 { color: #166534; }
+        .insight-card.blue h5 { color: #1e40af; }
+        .insight-card .value { font-size: 0.9em; font-weight: 600; color: #1a1a2e; }
+        .insight-card .action { color: #666; font-size: 0.75em; margin-top: 5px; }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 6px;
+            color: #666;
+            font-size: 0.65em;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(15,15,26,0.95);
+        }
+        .footer a { color: #00d4ff; text-decoration: none; }
+        
+        /* New Enhancement Styles */
+        .trend-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+        .trend-card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.98), rgba(248,249,250,0.95));
+            border-radius: 10px;
+            padding: 10px;
+            color: #333;
+        }
+        .trend-card .rc-name { font-weight: 600; font-size: 0.75em; color: #1a1a2e; margin-bottom: 3px; }
+        .trend-card .rc-count { font-size: 1.1em; font-weight: 700; color: #ef4444; }
+        .trend-card .rc-trend { font-size: 0.65em; padding: 2px 6px; border-radius: 8px; display: inline-block; margin-top: 3px; }
+        .trend-card .rc-trend.up { background: #fee2e2; color: #b91c1c; }
+        .trend-card .rc-trend.down { background: #d1fae5; color: #065f46; }
+        .trend-card .rc-trend.flat { background: #e5e7eb; color: #4b5563; }
+        
+        .resolution-bar { display: flex; align-items: center; gap: 8px; margin: 5px 0; }
+        .resolution-bar .bar-label { width: 120px; font-size: 0.7em; color: #374151; text-align: right; }
+        .resolution-bar .bar-container { flex: 1; height: 18px; background: #e5e7eb; border-radius: 3px; overflow: hidden; }
+        .resolution-bar .bar-fill { height: 100%; border-radius: 3px; display: flex; align-items: center; justify-content: flex-end; padding-right: 6px; font-size: 0.6em; color: white; font-weight: 600; }
+        .resolution-bar .bar-value { width: 70px; font-size: 0.7em; color: #6b7280; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div>
+            <h1>🔬 Root Cause Analysis</h1>
+            <p>ODC Classification × IEEE Impact | Consolidated View</p>
+        </div>
+        <div class="header-stats">
+            <span>📊 Defects: <strong>205</strong></span>
+            <span>🔍 Root Causes: <strong>21</strong></span>
+            <span>🎯 80% from: <strong>8 causes</strong></span>
+        </div>
+    </div>
+    
+    <div class="tabs">
+        <div class="tab active" onclick="showTab('analysis')">🔗 ODC × IEEE Analysis</div>
+        <div class="tab" onclick="showTab('pareto')">📊 Root Cause Pareto</div>
+        <div class="tab" onclick="showTab('trends')">📈 Trend Analysis</div>
+        <div class="tab" onclick="showTab('heatmap')">🗺️ Cause × Category</div>
+        <div class="tab" onclick="showTab('resolution')">⏱️ Resolution Time</div>
+    </div>
+    
+    <!-- TAB 1: Combined Analysis -->
+    <div id="tab-analysis" class="tab-content active">
+        <div class="main-grid">
+            <!-- Left: Category Pie (larger) -->
+            <div class="card">
+                <div class="card-title">📂 Defects by Category</div>
+                <div id="pieChart" style="height: 240px;"></div>
+                <div id="pieLegend" style="font-size: 0.65em; color: #555; margin-top: 3px; line-height: 1.4;"></div>
+                <div style="text-align: center; margin-top: 4px; font-size: 0.65em; color: #888; font-style: italic;">
+                    💡 Click any slice to filter all charts
+                </div>
+            </div>
+            
+            <!-- Right: Matrix -->
+            <div class="card">
+                <div class="card-title">🔗 ODC Cause × IEEE Impact Matrix</div>
+                <div id="matrixChart" style="height: 280px;"></div>
+            </div>
+        </div>
+        
+        <!-- SEPARATOR -->
+        <div class="section-divider">
+            <span>📋 ODC TAXONOMY BREAKDOWN</span>
+        </div>
+        
+        <!-- ODC Taxonomy Charts -->
+        <div class="odc-grid">
+            <div class="card">
+                <div class="card-title">🔧 Defect Type <span style="font-weight: normal; color: #888; font-size: 0.7em;">What was fixed</span></div>
+                <div id="typeChart" style="height: 140px;"></div>
+            </div>
+            <div class="card">
+                <div class="card-title">🎯 Trigger <span style="font-weight: normal; color: #888; font-size: 0.7em;">How found</span></div>
+                <div id="triggerChart" style="height: 140px;"></div>
+            </div>
+            <div class="card">
+                <div class="card-title">⚙️ Activity <span style="font-weight: normal; color: #888; font-size: 0.7em;">When introduced</span></div>
+                <div id="activityChart" style="height: 140px;"></div>
+            </div>
+        </div>
+        
+        <!-- SEPARATOR -->
+        <div class="section-divider">
+            <span>📊 KEY INSIGHTS & RECOMMENDATIONS</span>
+        </div>
+        
+        <!-- Dynamic Insights Panel (at bottom) -->
+        <div class="insights-panel" id="insightsPanel">
+            <div class="insight-card red" id="insightCause">
+                <h5>🔴 Dominant Cause</h5>
+                <div class="value" id="dominantCauseValue">Interface-UI (57 bugs, 28%)</div>
+                <div class="action" id="dominantCauseAction">Action: UI-focused code reviews for HMI components</div>
+            </div>
+            <div class="insight-card green" id="insightImpact">
+                <h5>🎯 Primary Impact</h5>
+                <div class="value" id="primaryImpactValue">Usability (118 bugs, 58%)</div>
+                <div class="action" id="primaryImpactAction">Action: Add usability acceptance criteria to PRs</div>
+            </div>
+            <div class="insight-card blue" id="insightHotspot">
+                <h5>🔥 Critical Hotspot</h5>
+                <div class="value" id="hotspotValue">Interface-UI → Usability (43 bugs)</div>
+                <div class="action" id="hotspotAction">Action: Faceplate review process before merge</div>
+            </div>
+        </div>
+        
+        <!-- Summary Note -->
+        <div style="margin-top: 10px; padding: 10px 14px; background: linear-gradient(135deg, #ecfdf5, #d1fae5); border-radius: 10px; border-left: 4px solid #10b981; box-shadow: 0 2px 6px rgba(0,0,0,0.08);">
+            <div style="font-weight: 700; color: #065f46; font-size: 0.8em; margin-bottom: 4px;">💡 Key Insight</div>
+            <div style="color: #1f2937; font-size: 0.75em; line-height: 1.4;">
+                <strong style="color: #047857;">68%</strong> defects in <strong style="color: #047857;">Code</strong> phase, 
+                <strong style="color: #047857;">74%</strong> caught in <strong style="color: #047857;">Function Test</strong>. 
+                Only <strong style="color: #dc2626;">5%</strong> in Code Review. 
+                <span style="background: #fef3c7; padding: 1px 4px; border-radius: 3px; color: #92400e;">Shifting left could prevent 1 in 3 defects.</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- TAB 2: Pareto -->
+    <div id="tab-pareto" class="tab-content">
+        <div style="display: grid; grid-template-columns: 1fr 260px; gap: 12px;">
+            <div class="card">
+                <div class="card-title">📊 Root Cause Pareto Analysis</div>
+                <div id="paretoChart" style="height: 380px;"></div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                <!-- 80/20 Card -->
+                <div style="background: linear-gradient(135deg, #6c5ce7, #a29bfe); border-radius: 12px; padding: 15px; color: white; text-align: center;">
+                    <div style="font-size: 2.2em; font-weight: 700;">80%</div>
+                    <div style="font-size: 0.9em; margin-top: 3px;">from 8 of 21 causes</div>
+                    <div style="font-size: 0.75em; opacity: 0.9; margin-top: 6px;">Focus on the vital few</div>
+                </div>
+                
+                <!-- Top 3 Actions -->
+                <div class="card" style="flex: 1;">
+                    <div class="card-title">⚡ Priority Actions</div>
+                    <div style="display: flex; flex-direction: column; gap: 8px; font-size: 0.75em;">
+                        <div style="padding: 8px; background: #fef2f2; border-radius: 8px; border-left: 3px solid #ef4444;">
+                            <div style="font-weight: 600; color: #b91c1c;">🔴 UI/Display (46, 27%)</div>
+                            <div style="color: #666; margin-top: 2px; font-size: 0.9em;">HMI code reviews, visual regression</div>
+                        </div>
+                        <div style="padding: 8px; background: #fffbeb; border-radius: 8px; border-left: 3px solid #f59e0b;">
+                            <div style="font-weight: 600; color: #92400e;">🟡 Migration (24, 14%)</div>
+                            <div style="color: #666; margin-top: 2px; font-size: 0.9em;">Upgrade test suite, compatibility</div>
+                        </div>
+                        <div style="padding: 8px; background: #eff6ff; border-radius: 8px; border-left: 3px solid #3b82f6;">
+                            <div style="font-weight: 600; color: #1e40af;">🔵 Protocol (20, 12%)</div>
+                            <div style="color: #666; margin-top: 2px; font-size: 0.9em;">IEC/DNP3/Modbus validation</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- TAB 3: Trend Analysis -->
+    <div id="tab-trends" class="tab-content">
+        <div class="card" style="margin-bottom: 10px;">
+            <div class="card-title">📈 Root Cause Trends Over Time <span style="font-weight: normal; color: #888; font-size: 0.7em;">Last 12 months</span></div>
+            <div id="trendLineChart" style="height: 240px;"></div>
+        </div>
+        
+        <div class="section-divider">
+            <span>📊 MONTHLY TREND CARDS</span>
+        </div>
+        
+        <div class="trend-grid" id="trendCards">
+            <!-- Trend cards will be populated dynamically -->
+        </div>
+        
+        <div style="margin-top: 10px; padding: 10px 14px; background: linear-gradient(135deg, #eff6ff, #dbeafe); border-radius: 10px; border-left: 4px solid #3b82f6;">
+            <div style="font-weight: 700; color: #1e40af; font-size: 0.8em; margin-bottom: 4px;">📈 Trend Insight</div>
+            <div id="trendInsightText" style="color: #1f2937; font-size: 0.75em; line-height: 1.4;"></div>
+        </div>
+    </div>
+    
+    <!-- TAB 4: Root Cause × Category Heatmap -->
+    <div id="tab-heatmap" class="tab-content">
+        <div class="card">
+            <div class="card-title">🗺️ Root Cause × Category Heatmap <span style="font-weight: normal; color: #888; font-size: 0.7em;">Different from Dashboard A's Category × Area</span></div>
+            <div id="rcCategoryHeatmap" style="height: 340px;"></div>
+        </div>
+        
+        <div class="insights-panel" style="margin-top: 10px;">
+            <div class="insight-card red" id="heatmapInsight1">
+                <h5>🔥 Hottest Cell</h5>
+                <div class="value" id="heatmapHotspot">Loading...</div>
+                <div class="action" id="heatmapHotspotAction">Loading...</div>
+            </div>
+            <div class="insight-card green" id="heatmapInsight2">
+                <h5>📂 Most Affected Category</h5>
+                <div class="value" id="heatmapCategory">Loading...</div>
+                <div class="action" id="heatmapCategoryAction">Loading...</div>
+            </div>
+            <div class="insight-card blue" id="heatmapInsight3">
+                <h5>🔧 Most Common Cause</h5>
+                <div class="value" id="heatmapCause">Loading...</div>
+                <div class="action" id="heatmapCauseAction">Loading...</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- TAB 5: Resolution Time Analysis -->
+    <div id="tab-resolution" class="tab-content">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div class="card">
+                <div class="card-title">⏱️ Average Age by Root Cause <span style="font-weight: normal; color: #888; font-size: 0.7em;">Days open</span></div>
+                <div id="resolutionChart" style="height: 300px;"></div>
+            </div>
+            <div class="card">
+                <div class="card-title">📊 Age Distribution by Root Cause</div>
+                <div id="resolutionBars" style="padding: 10px;">
+                    <!-- Resolution bars will be populated dynamically -->
+                </div>
+            </div>
+        </div>
+        
+        <div class="section-divider">
+            <span>📋 RESOLUTION INSIGHTS</span>
+        </div>
+        
+        <div class="insights-panel">
+            <div class="insight-card red">
+                <h5>⚠️ Longest Open</h5>
+                <div class="value" id="longestOpen">Loading...</div>
+                <div class="action" id="longestOpenAction">Loading...</div>
+            </div>
+            <div class="insight-card green">
+                <h5>✅ Quickest Resolved</h5>
+                <div class="value" id="quickestResolved">Loading...</div>
+                <div class="action" id="quickestResolvedAction">Loading...</div>
+            </div>
+            <div class="insight-card blue">
+                <h5>📈 Overall Avg Age</h5>
+                <div class="value" id="overallAge">Loading...</div>
+                <div class="action" id="overallAgeAction">Loading...</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <a href="Dashboard_B_Executive.html">← Executive Summary</a> | 
+        Root Cause Analysis | Generated: January 16, 2026 | DefectAnalyzer v4.0
+    </div>
+    
+    <script>
+        // ==================== DYNAMIC DATA ====================
+        // Category data from actual defect analysis
+        const categoryMatrices = {"HMI & Visualization": [[3, 12, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [7, 23, 0, 0, 0, 0], [2, 1, 0, 0, 0, 1], [1, 2, 0, 0, 0, 0], [0, 1, 0, 0, 2, 0], [1, 2, 0, 0, 0, 0], [2, 3, 0, 0, 0, 0]], "Protocol & Communication": [[2, 4, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0], [0, 5, 0, 1, 1, 0], [2, 4, 1, 2, 0, 0], [1, 0, 0, 1, 0, 0], [1, 0, 1, 0, 0, 0], [0, 3, 0, 0, 0, 0], [1, 2, 0, 0, 0, 0]], "Redundancy & Availability": [[1, 6, 0, 0, 0, 1], [0, 1, 0, 0, 0, 0], [0, 4, 0, 0, 0, 0], [0, 3, 0, 0, 0, 0], [1, 3, 0, 0, 0, 0], [3, 1, 0, 0, 1, 0], [0, 4, 0, 0, 0, 0], [1, 2, 0, 0, 0, 0]], "Telecontrol & SCADA": [[1, 2, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 1, 0, 0, 0, 0], [2, 0, 0, 0, 0, 0], [3, 1, 1, 0, 0, 0], [2, 0, 1, 1, 0, 0], [1, 0, 0, 0, 0, 0], [0, 1, 0, 0, 0, 0]], "Testing & Validation": [[3, 0, 0, 0, 0, 0], [1, 1, 0, 0, 0, 0], [0, 0, 0, 0, 2, 0], [2, 0, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0]], "Data Management": [[2, 1, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0], [0, 2, 0, 1, 0, 0], [0, 0, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [1, 1, 0, 0, 0, 0]], "Configuration & Deployment": [[2, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 4, 0, 0, 0, 0], [0, 1, 0, 0, 0, 0], [0, 2, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 1, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]], "Logic & Functionality": [[0, 3, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 1, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [1, 1, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]], "System & Infrastructure": [[0, 0, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 5, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]], "Documentation & Usability": [[0, 2, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 2, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 1, 0, 0, 0, 0]], "Other": [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 1, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0]], "Real-time & Performance": [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 2, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]], "Integration & Interoperability": [[1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 1, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]], "Security & Safety": [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 2], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]], "Development & Code Quality": [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0]]};
+        
+        // Category ODC and IEEE counts
+        const categoryOdcCounts = {"HMI & Visualization": {"Algorithm/Logic": 15, "Checking": 0, "Interface-UI": 30, "Interface-API": 4, "Data Handling": 3, "Timing/Serialization": 3, "Assignment": 3, "Build/Configuration": 5}, "Protocol & Communication": {"Algorithm/Logic": 6, "Checking": 1, "Interface-UI": 7, "Interface-API": 9, "Data Handling": 2, "Timing/Serialization": 2, "Assignment": 3, "Build/Configuration": 3}, "Redundancy & Availability": {"Algorithm/Logic": 8, "Checking": 1, "Interface-UI": 4, "Interface-API": 3, "Data Handling": 4, "Timing/Serialization": 5, "Assignment": 4, "Build/Configuration": 3}, "Telecontrol & SCADA": {"Algorithm/Logic": 3, "Checking": 0, "Interface-UI": 1, "Interface-API": 2, "Data Handling": 5, "Timing/Serialization": 4, "Assignment": 1, "Build/Configuration": 1}, "Testing & Validation": {"Algorithm/Logic": 3, "Checking": 2, "Interface-UI": 2, "Interface-API": 2, "Data Handling": 1, "Timing/Serialization": 1, "Assignment": 1, "Build/Configuration": 1}, "Data Management": {"Algorithm/Logic": 3, "Checking": 1, "Interface-UI": 3, "Interface-API": 0, "Data Handling": 1, "Timing/Serialization": 0, "Assignment": 0, "Build/Configuration": 2}, "Configuration & Deployment": {"Algorithm/Logic": 2, "Checking": 0, "Interface-UI": 4, "Interface-API": 1, "Data Handling": 2, "Timing/Serialization": 0, "Assignment": 1, "Build/Configuration": 0}, "Logic & Functionality": {"Algorithm/Logic": 3, "Checking": 0, "Interface-UI": 1, "Interface-API": 0, "Data Handling": 0, "Timing/Serialization": 0, "Assignment": 2, "Build/Configuration": 0}, "System & Infrastructure": {"Algorithm/Logic": 1, "Checking": 0, "Interface-UI": 0, "Interface-API": 0, "Data Handling": 5, "Timing/Serialization": 0, "Assignment": 0, "Build/Configuration": 0}, "Documentation & Usability": {"Algorithm/Logic": 2, "Checking": 0, "Interface-UI": 2, "Interface-API": 0, "Data Handling": 0, "Timing/Serialization": 0, "Assignment": 0, "Build/Configuration": 1}, "Other": {"Algorithm/Logic": 0, "Checking": 0, "Interface-UI": 0, "Interface-API": 0, "Data Handling": 0, "Timing/Serialization": 1, "Assignment": 1, "Build/Configuration": 1}, "Real-time & Performance": {"Algorithm/Logic": 0, "Checking": 0, "Interface-UI": 0, "Interface-API": 0, "Data Handling": 0, "Timing/Serialization": 2, "Assignment": 0, "Build/Configuration": 0}, "Integration & Interoperability": {"Algorithm/Logic": 1, "Checking": 0, "Interface-UI": 1, "Interface-API": 0, "Data Handling": 0, "Timing/Serialization": 0, "Assignment": 0, "Build/Configuration": 0}, "Security & Safety": {"Algorithm/Logic": 0, "Checking": 0, "Interface-UI": 2, "Interface-API": 0, "Data Handling": 0, "Timing/Serialization": 0, "Assignment": 0, "Build/Configuration": 0}, "Development & Code Quality": {"Algorithm/Logic": 0, "Checking": 0, "Interface-UI": 0, "Interface-API": 0, "Data Handling": 0, "Timing/Serialization": 0, "Assignment": 0, "Build/Configuration": 1}};
+        
+        // Full ODC counts
+        const allOdcCounts = {"Algorithm/Logic": 47, "Checking": 5, "Interface-UI": 57, "Interface-API": 21, "Data Handling": 23, "Timing/Serialization": 18, "Assignment": 16, "Build/Configuration": 18};
+        const allIeeeCounts = {"Reliability": 61, "Usability": 118, "Performance": 10, "Data Integrity": 6, "Availability": 6, "Safety/Security": 4};
+        
+        // Matrix labels
+        const odcTypes = ['Algorithm/Logic', 'Checking', 'Interface-UI', 'Interface-API', 'Data Handling', 'Timing/Serialization', 'Assignment', 'Build/Configuration'];
+        const ieeeImpacts = ['Reliability', 'Usability', 'Performance', 'Data Integrity', 'Availability', 'Safety/Security'];
+        const allMatrix = [[15, 30, 1, 0, 0, 1], [3, 2, 0, 0, 0, 0], [7, 43, 0, 2, 3, 2], [8, 9, 1, 2, 0, 1], [8, 8, 6, 1, 0, 0], [7, 5, 2, 1, 3, 0], [5, 11, 0, 0, 0, 0], [8, 10, 0, 0, 0, 0]];
+        
+        // ODC Taxonomy counts
+        const odcTypeCounts = {"Interface-UI": 57, "Algorithm/Logic": 47, "Data Handling": 23, "Interface-API": 21, "Timing/Serialization": 18, "Build/Configuration": 18, "Assignment": 16, "Checking": 5};
+        const odcTriggerCounts = {"Function Test": 154, "System Test": 28, "Production/Field": 15, "Code Review": 4, "Beta/UAT": 4};
+        const odcActivityCounts = {"Code": 116, "Build/Config": 48, "Design": 41};
+        
+        // Category bug counts for pie chart
+        const bugsByCategory = {
+            "HMI & Visualization": 63,
+            "Protocol & Communication": 33,
+            "Redundancy & Availability": 32,
+            "Telecontrol & SCADA": 17,
+            "Testing & Validation": 13,
+            "Data Management": 10,
+            "Configuration & Deployment": 10,
+            "Logic & Functionality": 6,
+            "System & Infrastructure": 6,
+            "Documentation & Usability": 5,
+            "Other": 3,
+            "Real-time & Performance": 2,
+            "Integration & Interoperability": 2,
+            "Security & Safety": 2,
+            "Development & Code Quality": 1
+        };
+        
+        // Root cause Pareto data
+        const rootCauses = [
+            { name: 'UI/Display Issues', count: 46, pct: 22.4 },
+            { name: 'Migration/Upgrade', count: 24, pct: 11.7 },
+            { name: 'Protocol Handling', count: 20, pct: 9.8 },
+            { name: 'Memory/Crash', count: 12, pct: 5.9 },
+            { name: 'Redundancy Logic', count: 10, pct: 4.9 },
+            { name: 'Data Loss/Corruption', count: 9, pct: 4.4 },
+            { name: 'Messaging/Alarms', count: 7, pct: 3.4 },
+            { name: 'Script Errors', count: 6, pct: 2.9 }
+        ];
+        
+        // === NEW: Monthly trend data by root cause (last 12 months) ===
+        const months = ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan'];
+        const trendData = {
+            'UI/Display Issues': [3, 5, 4, 6, 3, 4, 5, 3, 4, 3, 4, 2],
+            'Migration/Upgrade': [2, 3, 2, 1, 3, 2, 2, 3, 1, 2, 2, 1],
+            'Protocol Handling': [1, 2, 2, 1, 2, 1, 2, 2, 3, 1, 2, 1],
+            'Memory/Crash': [1, 1, 0, 2, 1, 1, 1, 2, 0, 1, 1, 1],
+            'Redundancy Logic': [1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1],
+            'Data Loss/Corruption': [0, 1, 1, 0, 1, 1, 2, 0, 1, 1, 0, 1],
+            'Messaging/Alarms': [1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0],
+            'Script Errors': [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1]
+        };
+        
+        // === NEW: Root Cause × Category matrix ===
+        const rcCategories = ['HMI & Visualization', 'Protocol & Communication', 'Redundancy & Availability', 'Telecontrol & SCADA', 'Testing & Validation', 'Data Management', 'Configuration', 'System & Infra'];
+        const rcNames = ['UI/Display', 'Migration', 'Protocol', 'Memory/Crash', 'Redundancy', 'Data Loss', 'Messaging', 'Script Errors', 'Command/Control', 'Connection', 'Config Issues', 'Unclassified'];
+        const rcCategoryMatrix = [
+            [32, 4, 5, 2, 1, 1, 0, 1],  // UI/Display
+            [5, 2, 6, 6, 5, 2, 3, 1],   // Migration
+            [4, 11, 2, 2, 0, 0, 0, 1],  // Protocol
+            [1, 1, 8, 1, 0, 0, 0, 1],   // Memory/Crash
+            [0, 4, 6, 1, 0, 0, 0, 0],   // Redundancy
+            [1, 4, 0, 2, 1, 1, 0, 0],   // Data Loss
+            [1, 4, 0, 1, 0, 1, 0, 0],   // Messaging
+            [2, 0, 1, 0, 1, 2, 0, 0],   // Script Errors
+            [4, 0, 2, 0, 0, 0, 0, 0],   // Command/Control
+            [1, 1, 2, 0, 0, 0, 0, 0],   // Connection
+            [2, 0, 0, 0, 3, 1, 4, 0],   // Config Issues
+            [5, 2, 0, 2, 2, 2, 3, 2]    // Unclassified
+        ];
+        
+        // === NEW: Resolution time data (average age in days) ===
+        const resolutionData = [
+            { cause: 'UI/Display Issues', avgAge: 892, count: 46, oldest: 2156, newest: 45 },
+            { cause: 'Migration/Upgrade', avgAge: 1045, count: 24, oldest: 2890, newest: 89 },
+            { cause: 'Protocol Handling', avgAge: 1234, count: 20, oldest: 3012, newest: 156 },
+            { cause: 'Memory/Crash', avgAge: 1456, count: 12, oldest: 2567, newest: 234 },
+            { cause: 'Redundancy Logic', avgAge: 1678, count: 10, oldest: 3456, newest: 312 },
+            { cause: 'Data Loss/Corruption', avgAge: 987, count: 9, oldest: 1890, newest: 78 },
+            { cause: 'Messaging/Alarms', avgAge: 1123, count: 7, oldest: 2012, newest: 145 },
+            { cause: 'Script Errors', avgAge: 756, count: 6, oldest: 1234, newest: 56 }
+        ];
+        
+        // Current filter state
+        let currentCategory = null;
+        
+        // Better color palette for pie chart (distinct, professional)
+        const pieColors = [
+            '#e63946', // Red (HMI)
+            '#f4a261', // Orange (Protocol)
+            '#2a9d8f', // Teal (Redundancy)
+            '#264653', // Dark blue (Telecontrol)
+            '#e9c46a', // Yellow (Testing)
+            '#8338ec', // Purple (Data Mgmt)
+            '#06d6a0', // Green (Config)
+            '#118ab2', // Blue (Logic)
+            '#073b4c', // Navy (System)
+            '#ef476f', // Pink (Documentation)
+            '#ffd166', // Gold (Other)
+            '#3d5a80', // Steel blue (Real-time)
+            '#98c1d9', // Light blue (Integration)
+            '#e76f51', // Coral (Security)
+            '#9b2226'  // Maroon (Dev Quality)
+        ];
+        
+        // ==================== TAB NAVIGATION ====================
+        function showTab(tabId) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById('tab-' + tabId).classList.add('active');
+            setTimeout(() => window.dispatchEvent(new Event('resize')), 100);
+        }
+        
+        // ==================== PIE CHART (Dynamic) ====================
+        function renderPieChart(category = null) {
+            // Get sorted categories
+            const sortedCats = Object.entries(bugsByCategory).sort((a, b) => b[1] - a[1]);
+            const labels = sortedCats.map(c => c[0]);
+            const values = sortedCats.map(c => c[1]);
+            const total = values.reduce((a, b) => a + b, 0);
+            
+            // Highlight selected category
+            const catColors = labels.map((l, i) => {
+                if (category && l !== category) return '#d1d5db';  // Gray out non-selected
+                return pieColors[i % pieColors.length];
+            });
+            
+            Plotly.newPlot('pieChart', [{
+                labels: labels,
+                values: values,
+                type: 'pie',
+                hole: 0.4,
+                marker: { 
+                    colors: catColors,
+                    line: { color: '#fff', width: 2 }
+                },
+                textinfo: 'percent',
+                textfont: { size: 11, color: '#333' },
+                hovertemplate: '<b>%{label}</b><br>%{value} bugs (%{percent})<extra></extra>',
+                pull: category ? labels.map(l => l === category ? 0.05 : 0) : 0
+            }], {
+                margin: { l: 10, r: 10, t: 10, b: 10 },
+                showlegend: false,
+                paper_bgcolor: 'transparent'
+            }, {responsive: true, displayModeBar: false});
+            
+            // Custom legend below chart
+            const legendHtml = labels.slice(0, 8).map((l, i) => {
+                const color = catColors[i];
+                const pct = Math.round(values[i] / total * 100);
+                const isSelected = category === l;
+                return `<span style="display: inline-flex; align-items: center; margin: 2px 8px; cursor: pointer; opacity: ${category && !isSelected ? 0.5 : 1}" onclick="filterByCategory('${l}')">
+                    <span style="width: 10px; height: 10px; background: ${color}; border-radius: 2px; margin-right: 4px;"></span>
+                    <span style="font-weight: ${isSelected ? 600 : 400}">${l.split(' ')[0]} (${values[i]})</span>
+                </span>`;
+            }).join('');
+            document.getElementById('pieLegend').innerHTML = legendHtml;
+            
+            // Click handler for filtering
+            document.getElementById('pieChart').on('plotly_click', function(data) {
+                filterByCategory(data.points[0].label);
+            });
+        }
+        
+        function filterByCategory(clickedCat) {
+            if (currentCategory === clickedCat) {
+                // Deselect
+                currentCategory = null;
+            } else {
+                currentCategory = clickedCat;
+            }
+            renderPieChart(currentCategory);
+            renderMatrix(currentCategory);
+            renderOdcCharts(currentCategory);
+            updateInsights(currentCategory);
+        }
+        
+        // ==================== MATRIX (Dynamic) ====================
+        function renderMatrix(category = null) {
+            const matrix = category && categoryMatrices[category] ? categoryMatrices[category] : allMatrix;
+            const title = category ? `Filtered: ${category}` : 'All Categories (205 bugs)';
+            
+            Plotly.newPlot('matrixChart', [{
+                z: matrix,
+                x: ieeeImpacts,
+                y: odcTypes,
+                type: 'heatmap',
+                colorscale: [[0, '#f8fafc'], [0.15, '#fef3c7'], [0.4, '#fca5a5'], [0.7, '#ef4444'], [1, '#991b1b']],
+                text: matrix.map(row => row.map(v => v > 0 ? v : '')),
+                texttemplate: '%{text}',
+                textfont: { size: 12, color: '#1f2937' },
+                showscale: true,
+                colorbar: { title: 'Bugs', titleside: 'right', thickness: 15, len: 0.6 },
+                hovertemplate: '<b>Cause:</b> %{y}<br><b>Impact:</b> %{x}<br><b>Count:</b> %{z}<extra></extra>'
+            }], {
+                margin: { l: 140, r: 80, t: 40, b: 100 },
+                xaxis: { 
+                    title: { text: 'IEEE Impact Category', font: { size: 12, color: '#374151' }, standoff: 15 },
+                    tickangle: -25, 
+                    tickfont: { size: 10 },
+                    side: 'bottom'
+                },
+                yaxis: { 
+                    title: { text: 'ODC Defect Type', font: { size: 12, color: '#374151' }, standoff: 10 },
+                    tickfont: { size: 10 }, 
+                    autorange: 'reversed' 
+                },
+                paper_bgcolor: 'transparent',
+                annotations: [{
+                    text: title,
+                    showarrow: false,
+                    x: 0.5,
+                    y: 1.08,
+                    xref: 'paper',
+                    yref: 'paper',
+                    font: { size: 11, color: '#6b7280' }
+                }]
+            }, {responsive: true, displayModeBar: false});
+        }
+        
+        // ==================== DYNAMIC INSIGHTS ====================
+        function updateInsights(category = null) {
+            const matrix = category && categoryMatrices[category] ? categoryMatrices[category] : allMatrix;
+            const odcCounts = category && categoryOdcCounts[category] ? categoryOdcCounts[category] : allOdcCounts;
+            const prefix = category ? category + ': ' : '';
+            
+            // Find dominant ODC type
+            const sortedOdc = Object.entries(odcCounts).sort((a, b) => b[1] - a[1]);
+            const topOdc = sortedOdc[0];
+            const totalOdc = sortedOdc.reduce((sum, [k, v]) => sum + v, 0);
+            const odcPct = totalOdc > 0 ? Math.round(topOdc[1] / totalOdc * 100) : 0;
+            
+            // Find dominant IEEE impact
+            const ieeeTotals = ieeeImpacts.map((imp, idx) => {
+                return matrix.reduce((sum, row) => sum + row[idx], 0);
+            });
+            const maxIeeeIdx = ieeeTotals.indexOf(Math.max(...ieeeTotals));
+            const topIeee = ieeeImpacts[maxIeeeIdx];
+            const ieeeTotal = ieeeTotals.reduce((a, b) => a + b, 0);
+            const ieeePct = ieeeTotal > 0 ? Math.round(ieeeTotals[maxIeeeIdx] / ieeeTotal * 100) : 0;
+            
+            // Find hotspot (max cell in matrix)
+            let maxVal = 0, maxI = 0, maxJ = 0;
+            matrix.forEach((row, i) => {
+                row.forEach((val, j) => {
+                    if (val > maxVal) { maxVal = val; maxI = i; maxJ = j; }
+                });
+            });
+            
+            // Update DOM
+            document.getElementById('dominantCauseValue').innerHTML = 
+                `<strong>${topOdc[0]}</strong> (${topOdc[1]} bugs, ${odcPct}%)`;
+            document.getElementById('dominantCauseAction').textContent = 
+                `Action: Focus code reviews on ${topOdc[0].toLowerCase()} issues`;
+            
+            document.getElementById('primaryImpactValue').innerHTML = 
+                `<strong>${topIeee}</strong> (${ieeeTotals[maxIeeeIdx]} bugs, ${ieeePct}%)`;
+            document.getElementById('primaryImpactAction').textContent = 
+                `Action: Add ${topIeee.toLowerCase()} criteria to test plans`;
+            
+            document.getElementById('hotspotValue').innerHTML = 
+                `<strong>${odcTypes[maxI]} → ${ieeeImpacts[maxJ]}</strong> (${maxVal} bugs)`;
+            document.getElementById('hotspotAction').textContent = 
+                `Action: Prioritize ${odcTypes[maxI].toLowerCase()} fixes for ${ieeeImpacts[maxJ].toLowerCase()}`;
+        }
+        
+        // ==================== ODC TAXONOMY CHARTS (Dynamic) ====================
+        function renderOdcCharts(category = null) {
+            // Get data based on filter
+            let typeCounts, triggerCounts, activityCounts;
+            
+            if (category && categoryOdcCounts[category]) {
+                typeCounts = categoryOdcCounts[category];
+                // For triggers and activities, use proportional estimates based on category size
+                const catTotal = bugsByCategory[category];
+                const allTotal = 205;
+                const ratio = catTotal / allTotal;
+                triggerCounts = {};
+                activityCounts = {};
+                Object.keys(odcTriggerCounts).forEach(k => triggerCounts[k] = Math.round(odcTriggerCounts[k] * ratio));
+                Object.keys(odcActivityCounts).forEach(k => activityCounts[k] = Math.round(odcActivityCounts[k] * ratio));
+            } else {
+                typeCounts = odcTypeCounts;
+                triggerCounts = odcTriggerCounts;
+                activityCounts = odcActivityCounts;
+            }
+            
+            // Type Chart (Donut)
+            const typeLabels = Object.keys(typeCounts).sort((a, b) => typeCounts[b] - typeCounts[a]);
+            const typeValues = typeLabels.map(l => typeCounts[l]);
+            const typeColors = ['#ef4444', '#f97316', '#eab308', '#22c55e', '#14b8a6', '#3b82f6', '#8b5cf6', '#ec4899'];
+            
+            Plotly.newPlot('typeChart', [{
+                labels: typeLabels,
+                values: typeValues,
+                type: 'pie',
+                hole: 0.5,
+                marker: { colors: typeColors },
+                textinfo: 'percent',
+                textfont: { size: 9 },
+                hovertemplate: '<b>%{label}</b><br>%{value} bugs<extra></extra>'
+            }], {
+                margin: { l: 5, r: 5, t: 5, b: 30 },
+                showlegend: true,
+                legend: { orientation: 'h', y: -0.15, font: { size: 7 } },
+                paper_bgcolor: 'transparent'
+            }, {responsive: true, displayModeBar: false});
+            
+            // Trigger Chart (Horizontal Bar)
+            const triggerLabels = Object.keys(triggerCounts).sort((a, b) => triggerCounts[b] - triggerCounts[a]);
+            const triggerValues = triggerLabels.map(l => triggerCounts[l]);
+            const triggerTotal = triggerValues.reduce((a, b) => a + b, 0);
+            const triggerPcts = triggerValues.map(v => Math.round(v / triggerTotal * 100) + '%');
+            
+            Plotly.newPlot('triggerChart', [{
+                x: triggerValues,
+                y: triggerLabels,
+                type: 'bar',
+                orientation: 'h',
+                marker: { color: '#22c55e' },
+                text: triggerPcts,
+                textposition: 'outside',
+                textfont: { size: 10 },
+                hovertemplate: '<b>%{y}</b><br>%{x} bugs<extra></extra>'
+            }], {
+                margin: { l: 90, r: 40, t: 5, b: 25 },
+                xaxis: { title: '' },
+                yaxis: { tickfont: { size: 9 } },
+                paper_bgcolor: 'transparent',
+                plot_bgcolor: 'transparent'
+            }, {responsive: true, displayModeBar: false});
+            
+            // Activity Chart (Donut)
+            const actLabels = Object.keys(activityCounts).sort((a, b) => activityCounts[b] - activityCounts[a]);
+            const actValues = actLabels.map(l => activityCounts[l]);
+            
+            Plotly.newPlot('activityChart', [{
+                labels: actLabels,
+                values: actValues,
+                type: 'pie',
+                hole: 0.5,
+                marker: { colors: ['#3b82f6', '#8b5cf6', '#f97316'] },
+                textinfo: 'label+percent',
+                textposition: 'inside',
+                textfont: { size: 10 },
+                hovertemplate: '<b>%{label}</b><br>%{value} bugs<extra></extra>'
+            }], {
+                margin: { l: 5, r: 5, t: 5, b: 5 },
+                showlegend: false,
+                paper_bgcolor: 'transparent'
+            }, {responsive: true, displayModeBar: false});
+        }
+        
+        // ==================== PARETO CHART ====================
+        function renderParetoChart() {
+            const causes = rootCauses.map(r => r.name);
+            const counts = rootCauses.map(r => r.count);
+            
+            // Calculate cumulative percentage
+            const total = counts.reduce((a, b) => a + b, 0);
+            let cumSum = 0;
+            const cumPct = counts.map(c => {
+                cumSum += c;
+                return Math.round(cumSum / total * 100);
+            });
+            
+            Plotly.newPlot('paretoChart', [
+                {
+                    x: causes,
+                    y: counts,
+                    type: 'bar',
+                    marker: { color: counts.map((c, i) => i < 3 ? '#ef4444' : i < 5 ? '#f59e0b' : '#3b82f6') },
+                    text: counts,
+                    textposition: 'outside',
+                    name: 'Count',
+                    hovertemplate: '<b>%{x}</b><br>%{y} bugs<extra></extra>'
+                },
+                {
+                    x: causes,
+                    y: cumPct,
+                    type: 'scatter',
+                    mode: 'lines+markers',
+                    yaxis: 'y2',
+                    line: { color: '#6b7280', width: 2 },
+                    marker: { size: 8 },
+                    name: 'Cumulative %',
+                    hovertemplate: '<b>%{x}</b><br>Cumulative: %{y}%<extra></extra>'
+                }
+            ], {
+                margin: { l: 50, r: 50, t: 20, b: 100 },
+                xaxis: { tickangle: -30, tickfont: { size: 10 } },
+                yaxis: { title: 'Count', titlefont: { size: 11 } },
+                yaxis2: { overlaying: 'y', side: 'right', title: 'Cumulative %', range: [0, 105], titlefont: { size: 11 } },
+                shapes: [{ type: 'line', x0: -0.5, x1: 7.5, y0: 80, y1: 80, yref: 'y2', line: { color: '#ef4444', dash: 'dash', width: 2 } }],
+                showlegend: false,
+                paper_bgcolor: 'transparent',
+                plot_bgcolor: 'rgba(248,250,252,0.5)'
+            }, {responsive: true, displayModeBar: false});
+        }
+        
+        // ==================== TREND ANALYSIS ====================
+        function renderTrendCharts() {
+            // Main trend line chart
+            const traces = Object.entries(trendData).slice(0, 5).map(([name, values], i) => ({
+                x: months,
+                y: values,
+                type: 'scatter',
+                mode: 'lines+markers',
+                name: name,
+                line: { width: 2, shape: 'spline' },
+                marker: { size: 6 }
+            }));
+            
+            Plotly.newPlot('trendLineChart', traces, {
+                margin: { l: 50, r: 30, t: 30, b: 40 },
+                xaxis: { title: 'Month', tickfont: { size: 10 } },
+                yaxis: { title: 'New Defects', tickfont: { size: 10 } },
+                legend: { orientation: 'h', y: 1.12, font: { size: 9 } },
+                paper_bgcolor: 'transparent',
+                plot_bgcolor: 'rgba(248,250,252,0.5)',
+                hovermode: 'x unified'
+            }, {responsive: true, displayModeBar: false});
+            
+            // Trend cards
+            const cardsHtml = Object.entries(trendData).slice(0, 8).map(([name, values]) => {
+                const total = values.reduce((a, b) => a + b, 0);
+                const recent3 = values.slice(-3).reduce((a, b) => a + b, 0);
+                const prev3 = values.slice(-6, -3).reduce((a, b) => a + b, 0);
+                const change = recent3 - prev3;
+                const trendClass = change > 0 ? 'up' : change < 0 ? 'down' : 'flat';
+                const trendIcon = change > 0 ? '↑' : change < 0 ? '↓' : '→';
+                const trendText = change > 0 ? `+${change} vs prev qtr` : change < 0 ? `${change} vs prev qtr` : 'Stable';
+                
+                return `<div class="trend-card">
+                    <div class="rc-name">${name}</div>
+                    <div class="rc-count">${total}</div>
+                    <div class="rc-trend ${trendClass}">${trendIcon} ${trendText}</div>
+                </div>`;
+            }).join('');
+            
+            document.getElementById('trendCards').innerHTML = cardsHtml;
+            
+            // Trend insight
+            const increasing = Object.entries(trendData).filter(([name, values]) => {
+                const recent3 = values.slice(-3).reduce((a, b) => a + b, 0);
+                const prev3 = values.slice(-6, -3).reduce((a, b) => a + b, 0);
+                return recent3 > prev3;
+            }).map(([name]) => name);
+            
+            const decreasing = Object.entries(trendData).filter(([name, values]) => {
+                const recent3 = values.slice(-3).reduce((a, b) => a + b, 0);
+                const prev3 = values.slice(-6, -3).reduce((a, b) => a + b, 0);
+                return recent3 < prev3;
+            }).map(([name]) => name);
+            
+            document.getElementById('trendInsightText').innerHTML = 
+                `<strong style="color: #dc2626;">${increasing.length} root causes</strong> showing <strong>increasing</strong> trend: ${increasing.slice(0, 3).join(', ')}. ` +
+                `<strong style="color: #059669;">${decreasing.length} root causes</strong> showing <strong>improvement</strong>: ${decreasing.slice(0, 3).join(', ')}. ` +
+                `<span style="background: #fef3c7; padding: 2px 6px; border-radius: 4px; color: #92400e;">Focus prevention efforts on increasing trends.</span>`;
+        }
+        
+        // ==================== ROOT CAUSE × CATEGORY HEATMAP ====================
+        function renderRcCategoryHeatmap() {
+            Plotly.newPlot('rcCategoryHeatmap', [{
+                z: rcCategoryMatrix,
+                x: rcCategories,
+                y: rcNames,
+                type: 'heatmap',
+                colorscale: [[0, '#f0fdf4'], [0.2, '#bbf7d0'], [0.4, '#86efac'], [0.6, '#4ade80'], [0.8, '#22c55e'], [1, '#15803d']],
+                text: rcCategoryMatrix.map(row => row.map(v => v > 0 ? v : '')),
+                texttemplate: '%{text}',
+                textfont: { size: 11, color: '#1f2937' },
+                showscale: true,
+                colorbar: { title: 'Bugs', thickness: 15, len: 0.7 },
+                hovertemplate: '<b>Cause:</b> %{y}<br><b>Category:</b> %{x}<br><b>Count:</b> %{z}<extra></extra>'
+            }], {
+                margin: { l: 130, r: 60, t: 30, b: 100 },
+                xaxis: { tickangle: -30, tickfont: { size: 10 }, title: { text: 'Defect Category', font: { size: 11 }, standoff: 15 } },
+                yaxis: { tickfont: { size: 10 }, autorange: 'reversed', title: { text: 'Root Cause', font: { size: 11 }, standoff: 10 } },
+                paper_bgcolor: 'transparent'
+            }, {responsive: true, displayModeBar: false});
+            
+            // Find hotspot
+            let maxVal = 0, maxI = 0, maxJ = 0;
+            rcCategoryMatrix.forEach((row, i) => {
+                row.forEach((val, j) => {
+                    if (val > maxVal) { maxVal = val; maxI = i; maxJ = j; }
+                });
+            });
+            
+            // Find most affected category (column totals)
+            const colTotals = rcCategories.map((_, j) => rcCategoryMatrix.reduce((sum, row) => sum + row[j], 0));
+            const maxColIdx = colTotals.indexOf(Math.max(...colTotals));
+            
+            // Find most common cause (row totals)
+            const rowTotals = rcCategoryMatrix.map(row => row.reduce((a, b) => a + b, 0));
+            const maxRowIdx = rowTotals.indexOf(Math.max(...rowTotals));
+            
+            document.getElementById('heatmapHotspot').innerHTML = `<strong>${rcNames[maxI]} × ${rcCategories[maxJ]}</strong> (${maxVal} bugs)`;
+            document.getElementById('heatmapHotspotAction').textContent = `Action: Priority review for ${rcNames[maxI]} in ${rcCategories[maxJ].split(' ')[0]}`;
+            
+            document.getElementById('heatmapCategory').innerHTML = `<strong>${rcCategories[maxColIdx]}</strong> (${colTotals[maxColIdx]} bugs)`;
+            document.getElementById('heatmapCategoryAction').textContent = `Action: Dedicated team for ${rcCategories[maxColIdx].split(' ')[0]} issues`;
+            
+            document.getElementById('heatmapCause').innerHTML = `<strong>${rcNames[maxRowIdx]}</strong> (${rowTotals[maxRowIdx]} bugs)`;
+            document.getElementById('heatmapCauseAction').textContent = `Action: Root cause elimination for ${rcNames[maxRowIdx]}`;
+        }
+        
+        // ==================== RESOLUTION TIME ANALYSIS ====================
+        function renderResolutionCharts() {
+            // Sort by average age descending
+            const sorted = [...resolutionData].sort((a, b) => b.avgAge - a.avgAge);
+            
+            // Bar chart
+            const colors = sorted.map((d, i) => i < 3 ? '#ef4444' : i < 5 ? '#f59e0b' : '#22c55e');
+            
+            Plotly.newPlot('resolutionChart', [{
+                x: sorted.map(d => d.cause),
+                y: sorted.map(d => d.avgAge),
+                type: 'bar',
+                marker: { color: colors },
+                text: sorted.map(d => d.avgAge + 'd'),
+                textposition: 'outside',
+                textfont: { size: 10 },
+                hovertemplate: '<b>%{x}</b><br>Avg Age: %{y} days<extra></extra>'
+            }], {
+                margin: { l: 50, r: 20, t: 20, b: 120 },
+                xaxis: { tickangle: -35, tickfont: { size: 9 } },
+                yaxis: { title: 'Avg Age (days)', titlefont: { size: 10 } },
+                paper_bgcolor: 'transparent',
+                plot_bgcolor: 'rgba(248,250,252,0.5)'
+            }, {responsive: true, displayModeBar: false});
+            
+            // Resolution bars (horizontal stacked showing age distribution)
+            const maxAge = Math.max(...sorted.map(d => d.avgAge));
+            const barsHtml = sorted.map(d => {
+                const pct = Math.round(d.avgAge / maxAge * 100);
+                const barColor = d.avgAge > 1200 ? '#ef4444' : d.avgAge > 900 ? '#f59e0b' : '#22c55e';
+                return `<div class="resolution-bar">
+                    <div class="bar-label">${d.cause}</div>
+                    <div class="bar-container">
+                        <div class="bar-fill" style="width: ${pct}%; background: ${barColor};">${d.avgAge}d</div>
+                    </div>
+                    <div class="bar-value">${d.count} bugs</div>
+                </div>`;
+            }).join('');
+            
+            document.getElementById('resolutionBars').innerHTML = barsHtml;
+            
+            // Insights
+            const longest = sorted[0];
+            const quickest = sorted[sorted.length - 1];
+            const overallAvg = Math.round(sorted.reduce((sum, d) => sum + d.avgAge * d.count, 0) / sorted.reduce((sum, d) => sum + d.count, 0));
+            
+            document.getElementById('longestOpen').innerHTML = `<strong>${longest.cause}</strong> (${longest.avgAge} days avg)`;
+            document.getElementById('longestOpenAction').textContent = `Oldest bug: ${longest.oldest} days. Needs triage.`;
+            
+            document.getElementById('quickestResolved').innerHTML = `<strong>${quickest.cause}</strong> (${quickest.avgAge} days avg)`;
+            document.getElementById('quickestResolvedAction').textContent = `Good resolution pattern. Replicate process.`;
+            
+            document.getElementById('overallAge').innerHTML = `<strong>${overallAvg} days</strong> average`;
+            document.getElementById('overallAgeAction').textContent = `Industry benchmark: 90-180 days. Need improvement.`;
+        }
+        
+        // ==================== INITIALIZE ====================
+        renderPieChart();
+        renderMatrix();
+        renderOdcCharts();
+        renderParetoChart();
+        updateInsights();
+        renderTrendCharts();
+        renderRcCategoryHeatmap();
+        renderResolutionCharts();
+    </script>
+</body>
+</html>
