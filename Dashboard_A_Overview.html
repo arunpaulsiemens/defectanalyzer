@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -572,52 +572,52 @@
 <body>
     <div class="header">
         <div>
-            <h1>📊 Dashboard A: Overview & Quick Win Metrics</h1>
+            <h1>ðŸ“Š Dashboard A: Overview & Quick Win Metrics</h1>
             <p style="color: #888; font-size: 0.85em;">Consolidated View: Aging, Escape Rate, Pareto, Heatmap, Dimensions</p>
         </div>
         <div class="header-info">
             <span>Total Defects: <strong>205</strong></span>
             <span>Categories: <strong>15</strong></span>
-            <span style="cursor: help;" title="📐 AVERAGE AGE CALCULATION&#10;━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━&#10;&#10;Formula:&#10;Avg Age = Sum of All Bug Ages ÷ Total Bugs&#10;&#10;━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━&#10;CALCULATION:&#10;&#10;Step 1: Per Bug Age&#10;   Age_Days = Today - Created_Date&#10;&#10;Step 2: Sum All Ages&#10;   Total Age = 247,046 days&#10;&#10;Step 3: Average&#10;   Avg = 247,046 ÷ 205&#10;   Avg = 1205.1 days&#10;&#10;━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━&#10;AGE DISTRIBUTION:&#10;&#10;• 0-30 days: 2 bugs&#10;• 31-90 days: 14 bugs&#10;• 91-180 days: 6 bugs&#10;• 181-365 days: 23 bugs&#10;• > 1 year: 160 bugs&#10;&#10;━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━&#10;INSIGHTS:&#10;&#10;• Old Bugs (>180 days): 183 (89%)&#10;• Critical Old (Sev2 >180d): 23&#10;&#10;Industry Benchmark: 90-180 days avg&#10;Status: ⚠️ HIGH - Significant aging backlog">Avg Age: <strong>1205 days</strong></span>
+            <span style="cursor: help;" title="ðŸ“ AVERAGE AGE CALCULATION&#10;â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”&#10;&#10;Formula:&#10;Avg Age = Sum of All Bug Ages Ã· Total Bugs&#10;&#10;â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”&#10;CALCULATION:&#10;&#10;Step 1: Per Bug Age&#10;   Age_Days = Today - Created_Date&#10;&#10;Step 2: Sum All Ages&#10;   Total Age = 247,046 days&#10;&#10;Step 3: Average&#10;   Avg = 247,046 Ã· 205&#10;   Avg = 1205.1 days&#10;&#10;â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”&#10;AGE DISTRIBUTION:&#10;&#10;â€¢ 0-30 days: 2 bugs&#10;â€¢ 31-90 days: 14 bugs&#10;â€¢ 91-180 days: 6 bugs&#10;â€¢ 181-365 days: 23 bugs&#10;â€¢ > 1 year: 160 bugs&#10;&#10;â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”&#10;INSIGHTS:&#10;&#10;â€¢ Old Bugs (>180 days): 183 (89%)&#10;â€¢ Critical Old (Sev2 >180d): 23&#10;&#10;Industry Benchmark: 90-180 days avg&#10;Status: âš ï¸ HIGH - Significant aging backlog">Avg Age: <strong>1205 days</strong></span>
             <span>Escape Rate: <strong>41.7%</strong></span>
         </div>
     </div>
     
     <div class="tabs">
-        <div class="tab active" onclick="showTab('overview')">📊 Overview & Analytics</div>
-        <div class="tab" onclick="showTab('pareto')">📊 Category Pareto</div>
-        <div class="tab" onclick="showTab('heatmap')">🗺️ Area Heatmap</div>
-        <div class="tab" onclick="showTab('dimensions')">📋 Classification Dimensions</div>
+        <div class="tab active" onclick="showTab('overview')">ðŸ“Š Overview & Analytics</div>
+        <div class="tab" onclick="showTab('pareto')">ðŸ“Š Category Pareto</div>
+        <div class="tab" onclick="showTab('heatmap')">ðŸ—ºï¸ Area Heatmap</div>
+        <div class="tab" onclick="showTab('dimensions')">ðŸ“‹ Classification Dimensions</div>
     </div>
     
     <!-- TAB 1: Single-Page Overview (Full Height) -->
     <div id="tab-overview" class="tab-content active">
         <!-- ROW 1: Compact KPI Cards -->
         <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 10px;">
-            <div class="metric-card" style="padding: 10px 12px; cursor: help;" title="📐 TOTAL DEFECTS CALCULATION&#10;━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━&#10;&#10;Count of all Severity 2 & 3 bugs&#10;from Azure DevOps query&#10;&#10;Breakdown:&#10;• Severity 2 (High): 25&#10;• Severity 3 (Medium): 180&#10;&#10;Total = 25 + 180 = 205">
+            <div class="metric-card" style="padding: 10px 12px; cursor: help;" title="ðŸ“ TOTAL DEFECTS CALCULATION&#10;â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”&#10;&#10;Count of all Severity 2 & 3 bugs&#10;from Azure DevOps query&#10;&#10;Breakdown:&#10;â€¢ Severity 2 (High): 25&#10;â€¢ Severity 3 (Medium): 180&#10;&#10;Total = 25 + 180 = 205">
                 <div class="metric-value" style="font-size: 1.8em;">205</div>
                 <div class="metric-label" style="font-size: 0.75em;">Total Defects</div>
                 <div class="metric-trend trend-warning" style="font-size: 0.7em;">Sev2: 25 | Sev3: 180</div>
             </div>
-            <div class="metric-card" style="padding: 10px 12px; background: linear-gradient(135deg, rgba(255,107,107,0.15), rgba(255,107,107,0.03)); cursor: help;" title="📐 OPEN BACKLOG CALCULATION&#10;━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━&#10;&#10;Backlog = Total - Resolved&#10;&#10;Formula:&#10;Open Backlog = Count of bugs where&#10;State ∈ (New, Active, In Progress)&#10;&#10;Current: 194 open bugs&#10;&#10;Trend Analysis:&#10;• Net Change = Resolution - Inflow&#10;• Net = 0.9 - 4.5&#10;• Net = -3.6 bugs/month&#10;&#10;Status: ⚠️ INCREASING - Inflow exceeds resolution capacity">
+            <div class="metric-card" style="padding: 10px 12px; background: linear-gradient(135deg, rgba(255,107,107,0.15), rgba(255,107,107,0.03)); cursor: help;" title="ðŸ“ OPEN BACKLOG CALCULATION&#10;â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”&#10;&#10;Backlog = Total - Resolved&#10;&#10;Formula:&#10;Open Backlog = Count of bugs where&#10;State âˆˆ (New, Active, In Progress)&#10;&#10;Current: 194 open bugs&#10;&#10;Trend Analysis:&#10;â€¢ Net Change = Resolution - Inflow&#10;â€¢ Net = 0.9 - 4.5&#10;â€¢ Net = -3.6 bugs/month&#10;&#10;Status: âš ï¸ INCREASING - Inflow exceeds resolution capacity">
                 <div class="metric-value" style="font-size: 1.8em; color: #ff6b6b;">194</div>
                 <div class="metric-label" style="font-size: 0.75em;">Open Backlog</div>
                 <div class="metric-trend trend-bad" style="font-size: 0.7em;">Increasing: -3.6/mo</div>
             </div>
-            <div class="metric-card" style="padding: 10px 12px; background: linear-gradient(135deg, rgba(0,212,255,0.12), rgba(0,212,255,0.03)); cursor: help;" title="📐 INFLOW/MONTH CALCULATION&#10;━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━&#10;&#10;METHOD: 12-Month Moving Average&#10;&#10;Why 12 months?&#10;• Industry standard for trend analysis&#10;• Smooths seasonal variations&#10;• Captures full business cycle&#10;• Balances recency vs stability&#10;&#10;━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━&#10;INFLOW CALCULATION:&#10;&#10;Step 1: Group bugs by Created Month&#10;Step 2: Take last 12 months of data&#10;Step 3: Average = Sum ÷ Months&#10;&#10;Your Data:&#10;• Months analyzed: 12&#10;• Bugs in period: varies by month&#10;• Average = 4.50/month&#10;&#10;━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━&#10;RESOLUTION RATE:&#10;&#10;Formula: Closed Bugs ÷ 12 months&#10;• Closed/Resolved: 11&#10;• Rate = 0.92/month&#10;&#10;━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━&#10;STATISTICAL QUALITY:&#10;• σ (Std Dev) = 2.91&#10;• CV = 65% (lower = more stable)">
+            <div class="metric-card" style="padding: 10px 12px; background: linear-gradient(135deg, rgba(0,212,255,0.12), rgba(0,212,255,0.03)); cursor: help;" title="ðŸ“ INFLOW/MONTH CALCULATION&#10;â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”&#10;&#10;METHOD: 12-Month Moving Average&#10;&#10;Why 12 months?&#10;â€¢ Industry standard for trend analysis&#10;â€¢ Smooths seasonal variations&#10;â€¢ Captures full business cycle&#10;â€¢ Balances recency vs stability&#10;&#10;â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”&#10;INFLOW CALCULATION:&#10;&#10;Step 1: Group bugs by Created Month&#10;Step 2: Take last 12 months of data&#10;Step 3: Average = Sum Ã· Months&#10;&#10;Your Data:&#10;â€¢ Months analyzed: 12&#10;â€¢ Bugs in period: varies by month&#10;â€¢ Average = 4.50/month&#10;&#10;â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”&#10;RESOLUTION RATE:&#10;&#10;Formula: Closed Bugs Ã· 12 months&#10;â€¢ Closed/Resolved: 11&#10;â€¢ Rate = 0.92/month&#10;&#10;â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”&#10;STATISTICAL QUALITY:&#10;â€¢ Ïƒ (Std Dev) = 2.91&#10;â€¢ CV = 65% (lower = more stable)">
                 <div class="metric-value" style="font-size: 1.8em; color: #00d4ff;">4.5</div>
                 <div class="metric-label" style="font-size: 0.75em;">Inflow/Month</div>
                 <div class="metric-trend" style="font-size: 0.7em;">Resolution: 0.9/mo</div>
             </div>
-            <div class="metric-card" style="padding: 10px 12px; background: linear-gradient(135deg, rgba(243,156,18,0.12), rgba(243,156,18,0.03)); cursor: help;" title="📐 RISK SCORE CALCULATION (0-100)&#10;━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━&#10;&#10;Formula (per bug):&#10;Risk = Age_Factor + Severity_Factor + Env_Factor + Category_Factor&#10;&#10;━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━&#10;1️⃣ AGE FACTOR (max 30 pts):&#10;   • Formula: min(30, Age_Days ÷ 12)&#10;   • 1 point per 12 days of age&#10;   • Older bugs = Higher risk&#10;&#10;2️⃣ SEVERITY FACTOR (max 30 pts):&#10;   • Bug Severity 2 (High/Critical) → +30 pts&#10;   • Bug Severity 3 (Medium) → +15 pts&#10;   ⚠️ Sev 2 is MORE critical than Sev 3&#10;&#10;3️⃣ ENVIRONMENT FACTOR (max 20 pts):&#10;   • Production/Field → +20 pts (escaped)&#10;   • Test → +10 pts (caught)&#10;   • Others → +0 pts&#10;&#10;4️⃣ CATEGORY FACTOR (max 20 pts):&#10;   • Top 3 categories → +20 pts&#10;   • Categories 4-6 → +10 pts&#10;   • Others → +0 pts&#10;&#10;━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━&#10;HIGH RISK THRESHOLD: ≥70/100&#10;&#10;Your Data:&#10;• Avg Score: 71.6/100&#10;• High Risk: 133 of 205 (65%)&#10;• Sev 2 bugs: 25&#10;• Sev 3 bugs: 180">
+            <div class="metric-card" style="padding: 10px 12px; background: linear-gradient(135deg, rgba(243,156,18,0.12), rgba(243,156,18,0.03)); cursor: help;" title="ðŸ“ RISK SCORE CALCULATION (0-100)&#10;â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”&#10;&#10;Formula (per bug):&#10;Risk = Age_Factor + Severity_Factor + Env_Factor + Category_Factor&#10;&#10;â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”&#10;1ï¸âƒ£ AGE FACTOR (max 30 pts):&#10;   â€¢ Formula: min(30, Age_Days Ã· 12)&#10;   â€¢ 1 point per 12 days of age&#10;   â€¢ Older bugs = Higher risk&#10;&#10;2ï¸âƒ£ SEVERITY FACTOR (max 30 pts):&#10;   â€¢ Bug Severity 2 (High/Critical) â†’ +30 pts&#10;   â€¢ Bug Severity 3 (Medium) â†’ +15 pts&#10;   âš ï¸ Sev 2 is MORE critical than Sev 3&#10;&#10;3ï¸âƒ£ ENVIRONMENT FACTOR (max 20 pts):&#10;   â€¢ Production/Field â†’ +20 pts (escaped)&#10;   â€¢ Test â†’ +10 pts (caught)&#10;   â€¢ Others â†’ +0 pts&#10;&#10;4ï¸âƒ£ CATEGORY FACTOR (max 20 pts):&#10;   â€¢ Top 3 categories â†’ +20 pts&#10;   â€¢ Categories 4-6 â†’ +10 pts&#10;   â€¢ Others â†’ +0 pts&#10;&#10;â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”&#10;HIGH RISK THRESHOLD: â‰¥70/100&#10;&#10;Your Data:&#10;â€¢ Avg Score: 71.6/100&#10;â€¢ High Risk: 133 of 205 (65%)&#10;â€¢ Sev 2 bugs: 25&#10;â€¢ Sev 3 bugs: 180">
                 <div class="metric-value" style="font-size: 1.8em; color: #f39c12;">72</div>
                 <div class="metric-label" style="font-size: 0.75em;">Risk Score</div>
                 <div class="metric-trend" style="font-size: 0.7em;">133 High Risk</div>
             </div>
-            <div class="metric-card" style="padding: 10px 12px; background: linear-gradient(135deg, rgba(155,89,182,0.12), rgba(155,89,182,0.03)); cursor: help;" title="📐 MODEL CONFIDENCE CALCULATION&#10;━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━&#10;&#10;Formula:&#10;Confidence = Data_Coverage + Sample_Size + Variance_Score&#10;&#10;Components (each 0-33 points):&#10;&#10;1. Data Coverage (33 pts max):&#10;   • Months of data: 12&#10;   • Score: min(12/12 × 33, 33)&#10;&#10;2. Sample Size (33 pts max):&#10;   • Total bugs: 205&#10;   • Score: min(205/100 × 33, 33)&#10;&#10;3. Variance Score (34 pts max):&#10;   • CV = 65%&#10;   • Lower CV = Higher score&#10;   • Score: max(34 - CV/2, 0)&#10;&#10;Total: 81/100 = HIGH&#10;&#10;Legend:&#10;• σ = 2.91 (spread of monthly counts)&#10;• CV = σ/mean × 100 = 65%">
+            <div class="metric-card" style="padding: 10px 12px; background: linear-gradient(135deg, rgba(155,89,182,0.12), rgba(155,89,182,0.03)); cursor: help;" title="ðŸ“ MODEL CONFIDENCE CALCULATION&#10;â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”&#10;&#10;Formula:&#10;Confidence = Data_Coverage + Sample_Size + Variance_Score&#10;&#10;Components (each 0-33 points):&#10;&#10;1. Data Coverage (33 pts max):&#10;   â€¢ Months of data: 12&#10;   â€¢ Score: min(12/12 Ã— 33, 33)&#10;&#10;2. Sample Size (33 pts max):&#10;   â€¢ Total bugs: 205&#10;   â€¢ Score: min(205/100 Ã— 33, 33)&#10;&#10;3. Variance Score (34 pts max):&#10;   â€¢ CV = 65%&#10;   â€¢ Lower CV = Higher score&#10;   â€¢ Score: max(34 - CV/2, 0)&#10;&#10;Total: 81/100 = HIGH&#10;&#10;Legend:&#10;â€¢ Ïƒ = 2.91 (spread of monthly counts)&#10;â€¢ CV = Ïƒ/mean Ã— 100 = 65%">
                 <div class="metric-value" style="font-size: 1.8em; color: #2ecc71;">81%</div>
                 <div class="metric-label" style="font-size: 0.75em;">Model Confidence</div>
-                <div class="metric-trend" style="font-size: 0.7em; cursor: help;">σ=2.9 | CV=65%</div>
+                <div class="metric-trend" style="font-size: 0.7em; cursor: help;">Ïƒ=2.9 | CV=65%</div>
             </div>
         </div>
         
@@ -627,15 +627,15 @@
             <!-- Card 1: ESCAPE RATE -->
             <div class="chart-card" style="padding: 12px; display: flex; flex-direction: column;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                    <span style="color: #ff6b6b; font-size: 0.85em; font-weight: bold;">🚨 ESCAPE RATE</span>
+                    <span style="color: #ff6b6b; font-size: 0.85em; font-weight: bold;">ðŸš¨ ESCAPE RATE</span>
                     <span style="background: rgba(255,107,107,0.25); padding: 3px 10px; border-radius: 10px; font-size: 0.9em; font-weight: bold; color: #ff6b6b;">42%</span>
                 </div>
                 <div id="escapeChart" style="flex: 1; min-height: 100px;"></div>
                 <div style="background: rgba(0,0,0,0.4); border-radius: 5px; padding: 8px; margin-top: 8px; font-family: 'Courier New', monospace; border: 1px solid rgba(255,107,107,0.3);">
-                    <div style="color: #ff6b6b; font-size: 0.7em; margin-bottom: 4px;">📐 CALCULATION:</div>
+                    <div style="color: #ff6b6b; font-size: 0.7em; margin-bottom: 4px;">ðŸ“ CALCULATION:</div>
                     <div style="color: #ccc; font-size: 0.72em; line-height: 1.5;">
                         Escaped: <strong style="color: #ff6b6b;">85</strong> | Caught: <strong style="color: #2ecc71;">119</strong><br>
-                        = 85/(85+119) × 100 = <strong style="color: #ff6b6b;">41.7%</strong>
+                        = 85/(85+119) Ã— 100 = <strong style="color: #ff6b6b;">41.7%</strong>
                     </div>
                 </div>
                 <div style="font-size: 0.65em; color: #888; margin-top: 6px; text-align: center; padding: 4px; background: rgba(0,0,0,0.2); border-radius: 3px;">
@@ -646,28 +646,28 @@
             <!-- Card 2: BACKLOG FORECAST -->
             <div class="chart-card" style="padding: 12px; display: flex; flex-direction: column;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                    <span style="color: #ff6b6b; font-size: 0.85em; font-weight: bold;">📈 6-MO BACKLOG</span>
+                    <span style="color: #ff6b6b; font-size: 0.85em; font-weight: bold;">ðŸ“ˆ 6-MO BACKLOG</span>
                 </div>
                 <div style="text-align: center; padding: 12px 0; flex: 1; display: flex; flex-direction: column; justify-content: center;">
-                    <div style="font-size: 2em; font-weight: bold; color: #ff6b6b;">194 → 216</div>
+                    <div style="font-size: 2em; font-weight: bold; color: #ff6b6b;">194 â†’ 216</div>
                     <div style="font-size: 0.75em; color: #888; margin-top: 5px;">Range: 202 - 229 (87% CI)</div>
                 </div>
                 <div style="background: rgba(0,0,0,0.4); border-radius: 5px; padding: 8px; font-family: 'Courier New', monospace; border: 1px solid rgba(0,212,255,0.3);">
-                    <div style="color: #00d4ff; font-size: 0.7em; margin-bottom: 4px;">📐 CALCULATION:</div>
+                    <div style="color: #00d4ff; font-size: 0.7em; margin-bottom: 4px;">ðŸ“ CALCULATION:</div>
                     <div style="color: #ccc; font-size: 0.72em; line-height: 1.5;">
                         Net = 0.9 - 4.5 = <strong style="color: #ff6b6b;">-3.6</strong>/mo<br>
-                        6-Mo = 194 + 3.6×6 = <strong>216</strong>
+                        6-Mo = 194 + 3.6Ã—6 = <strong>216</strong>
                     </div>
                 </div>
                 <div style="font-size: 0.7em; margin-top: 6px; padding: 5px; background: rgba(255,107,107,0.15); border-radius: 3px; color: #ff6b6b; text-align: center;">
-                    ⚡ Need >4/mo to stabilize
+                    âš¡ Need >4/mo to stabilize
                 </div>
             </div>
             
             <!-- Card 3: QUARTERLY FORECAST -->
             <div class="chart-card" style="padding: 12px; display: flex; flex-direction: column;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                    <span style="color: #00d4ff; font-size: 0.85em; font-weight: bold;">📅 QUARTERLY</span>
+                    <span style="color: #00d4ff; font-size: 0.85em; font-weight: bold;">ðŸ“… QUARTERLY</span>
                     <span style="background: rgba(255,107,107,0.2); padding: 3px 8px; border-radius: 8px; font-size: 0.7em; color: #ff6b6b;">~0-11 esc</span>
                 </div>
                 <div style="text-align: center; padding: 12px 0; flex: 1; display: flex; flex-direction: column; justify-content: center;">
@@ -675,21 +675,21 @@
                     <div style="font-size: 0.75em; color: #888; margin-top: 5px;">New Defects (0 - 27)</div>
                 </div>
                 <div style="background: rgba(0,0,0,0.4); border-radius: 5px; padding: 8px; font-family: 'Courier New', monospace; border: 1px solid rgba(0,212,255,0.3);">
-                    <div style="color: #00d4ff; font-size: 0.7em; margin-bottom: 4px;">📐 CALCULATION:</div>
+                    <div style="color: #00d4ff; font-size: 0.7em; margin-bottom: 4px;">ðŸ“ CALCULATION:</div>
                     <div style="color: #ccc; font-size: 0.72em; line-height: 1.5;">
-                        = 4.5 × 3 = <strong>14</strong> ± 13<br>
-                        Escapes = 14 × 42% = <strong style="color: #ff6b6b;">0-11</strong>
+                        = 4.5 Ã— 3 = <strong>14</strong> Â± 13<br>
+                        Escapes = 14 Ã— 42% = <strong style="color: #ff6b6b;">0-11</strong>
                     </div>
                 </div>
                 <div style="font-size: 0.7em; margin-top: 6px; padding: 5px; background: rgba(243,156,18,0.15); border-radius: 3px; color: #f39c12; text-align: center;">
-                    ⚡ Reduce to 20% = prevent ~3
+                    âš¡ Reduce to 20% = prevent ~3
                 </div>
             </div>
             
             <!-- Card 4: QUICK WIN -->
             <div class="chart-card" style="padding: 12px; display: flex; flex-direction: column;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                    <span style="color: #2ecc71; font-size: 0.85em; font-weight: bold;">🎯 QUICK WIN</span>
+                    <span style="color: #2ecc71; font-size: 0.85em; font-weight: bold;">ðŸŽ¯ QUICK WIN</span>
                     <span style="background: rgba(46,204,113,0.2); padding: 3px 8px; border-radius: 8px; font-size: 0.7em; color: #2ecc71;">101 bugs</span>
                 </div>
                 <div style="text-align: center; padding: 12px 0; flex: 1; display: flex; flex-direction: column; justify-content: center;">
@@ -697,13 +697,13 @@
                     <div style="font-size: 0.75em; color: #888; margin-top: 5px;">Addressable by Top 3</div>
                 </div>
                 <div style="background: rgba(0,0,0,0.4); border-radius: 5px; padding: 8px; font-family: 'Courier New', monospace; border: 1px solid rgba(46,204,113,0.3);">
-                    <div style="color: #2ecc71; font-size: 0.7em; margin-bottom: 4px;">📐 TOP 3 ROOT CAUSES:</div>
+                    <div style="color: #2ecc71; font-size: 0.7em; margin-bottom: 4px;">ðŸ“ TOP 3 ROOT CAUSES:</div>
                     <div style="color: #ccc; font-size: 0.72em; line-height: 1.5;">
                         1. UI/Display Issue: <strong style="color:#2ecc71;">51</strong><br>2. Migration/Upgrade: <strong style="color:#2ecc71;">30</strong><br>3. Memory Leak/Crash: <strong style="color:#2ecc71;">20</strong>
                     </div>
                 </div>
                 <div style="font-size: 0.7em; margin-top: 6px; padding: 5px; background: rgba(46,204,113,0.15); border-radius: 3px; color: #2ecc71; text-align: center;">
-                    ⚡ Fix #1 → 51 bugs (25%)
+                    âš¡ Fix #1 â†’ 51 bugs (25%)
                 </div>
             </div>
         </div>
@@ -713,7 +713,7 @@
             <!-- Category Health -->
             <div style="background: rgba(46,204,113,0.08); border: 1px solid rgba(46,204,113,0.3); border-radius: 6px; padding: 8px 10px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                    <span style="color: #2ecc71; font-size: 0.8em; font-weight: bold;">🏥 CATEGORY HEALTH</span>
+                    <span style="color: #2ecc71; font-size: 0.8em; font-weight: bold;">ðŸ¥ CATEGORY HEALTH</span>
                     <span style="color: #888; font-size: 0.6em;">100 - (Vol+Esc+Age+Sev)</span>
                 </div>
                 <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px;">
@@ -754,34 +754,34 @@
             <!-- Industry Benchmarks -->
             <div style="background: rgba(52,152,219,0.08); border: 1px solid rgba(52,152,219,0.3); border-radius: 6px; padding: 8px 10px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                    <span style="color: #3498db; font-size: 0.8em; font-weight: bold;">📏 INDUSTRY BENCHMARKS</span>
-                    <span style="color: #888; font-size: 0.55em; cursor: help;" title="Sources:&#10;• Capers Jones - Software Quality Metrics&#10;• IEEE/CISQ - Cost of Poor Software Quality&#10;• DORA State of DevOps Reports&#10;• Industry averages from 10,000+ projects">📚 Sources</span>
+                    <span style="color: #3498db; font-size: 0.8em; font-weight: bold;">ðŸ“ INDUSTRY BENCHMARKS</span>
+                    <span style="color: #888; font-size: 0.55em; cursor: help;" title="Sources:&#10;â€¢ Capers Jones - Software Quality Metrics&#10;â€¢ IEEE/CISQ - Cost of Poor Software Quality&#10;â€¢ DORA State of DevOps Reports&#10;â€¢ Industry averages from 10,000+ projects">ðŸ“š Sources</span>
                 </div>
                 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;">
                     <!-- Escape Rate Benchmark -->
-                    <div style="background: rgba(0,0,0,0.2); border-radius: 4px; padding: 6px; text-align: center;" title="Source: Capers Jones - Applied Software Measurement&#10;&#10;Industry Data:&#10;• Best-in-class: <5%&#10;• Average: 15-20%&#10;• Poor: >30%&#10;&#10;Your rate: 42%">
+                    <div style="background: rgba(0,0,0,0.2); border-radius: 4px; padding: 6px; text-align: center;" title="Source: Capers Jones - Applied Software Measurement&#10;&#10;Industry Data:&#10;â€¢ Best-in-class: <5%&#10;â€¢ Average: 15-20%&#10;â€¢ Poor: >30%&#10;&#10;Your rate: 42%">
                         <div style="font-size: 0.6em; color: #3498db; margin-bottom: 2px;">Escape Rate</div>
                         <div style="font-size: 0.9em; font-weight: bold; color: #ff6b6b;">42%</div>
                         <div style="font-size: 0.5em; color: #888;">vs <span style="color: #3498db;">15-20%</span> avg</div>
-                        <div style="font-size: 0.45em; color: #ff6b6b;">⚠ High</div>
+                        <div style="font-size: 0.45em; color: #ff6b6b;">âš  High</div>
                     </div>
                     <!-- Defect Density Benchmark -->
-                    <div style="background: rgba(0,0,0,0.2); border-radius: 4px; padding: 6px; text-align: center;" title="Source: IEEE/CISQ CPSQ Report 2022&#10;&#10;Industry Data (per KLOC):&#10;• Best-in-class: <1&#10;• Average: 5-10&#10;• Poor: >15&#10;&#10;Note: Density varies by domain">
+                    <div style="background: rgba(0,0,0,0.2); border-radius: 4px; padding: 6px; text-align: center;" title="Source: IEEE/CISQ CPSQ Report 2022&#10;&#10;Industry Data (per KLOC):&#10;â€¢ Best-in-class: <1&#10;â€¢ Average: 5-10&#10;â€¢ Poor: >15&#10;&#10;Note: Density varies by domain">
                         <div style="font-size: 0.6em; color: #3498db; margin-bottom: 2px;">Resolution</div>
                         <div style="font-size: 0.9em; font-weight: bold; color: #ff6b6b;">0.9/mo</div>
                         <div style="font-size: 0.5em; color: #888;">vs <span style="color: #3498db;">3-5</span>/mo</div>
-                        <div style="font-size: 0.45em; color: #ff6b6b;">⚠ Low</div>
+                        <div style="font-size: 0.45em; color: #ff6b6b;">âš  Low</div>
                     </div>
                     <!-- MTTR Benchmark -->
-                    <div style="background: rgba(0,0,0,0.2); border-radius: 4px; padding: 6px; text-align: center;" title="📐 AVG AGE CALCULATION&#10;━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━&#10;&#10;Formula:&#10;Avg = Sum(Today - Created_Date) ÷ Bug_Count&#10;&#10;Your Data:&#10;• Total Age: 247,046 days&#10;• Bug Count: 205&#10;• Average: 1205.1 days&#10;&#10;━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━&#10;DISTRIBUTION:&#10;• 0-30d: 2&#10;• 31-90d: 14&#10;• 91-180d: 6&#10;• 181-365d: 23&#10;• >1yr: 160&#10;&#10;━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━&#10;BENCHMARK (DORA/Industry):&#10;• Best: <90 days&#10;• Average: 90-180 days&#10;• Poor: >365 days">
+                    <div style="background: rgba(0,0,0,0.2); border-radius: 4px; padding: 6px; text-align: center;" title="ðŸ“ AVG AGE CALCULATION&#10;â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”&#10;&#10;Formula:&#10;Avg = Sum(Today - Created_Date) Ã· Bug_Count&#10;&#10;Your Data:&#10;â€¢ Total Age: 247,046 days&#10;â€¢ Bug Count: 205&#10;â€¢ Average: 1205.1 days&#10;&#10;â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”&#10;DISTRIBUTION:&#10;â€¢ 0-30d: 2&#10;â€¢ 31-90d: 14&#10;â€¢ 91-180d: 6&#10;â€¢ 181-365d: 23&#10;â€¢ >1yr: 160&#10;&#10;â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”&#10;BENCHMARK (DORA/Industry):&#10;â€¢ Best: <90 days&#10;â€¢ Average: 90-180 days&#10;â€¢ Poor: >365 days">
                         <div style="font-size: 0.6em; color: #3498db; margin-bottom: 2px;">Avg Age</div>
                         <div style="font-size: 0.9em; font-weight: bold; color: #ff6b6b;">1205d</div>
                         <div style="font-size: 0.5em; color: #888;">vs <span style="color: #3498db;">90-180</span>d</div>
-                        <div style="font-size: 0.45em; color: #ff6b6b;">⚠ Old</div>
+                        <div style="font-size: 0.45em; color: #ff6b6b;">âš  Old</div>
                     </div>
                 </div>
                 <div style="font-size: 0.5em; color: #666; margin-top: 4px; text-align: center; font-style: italic;">
-                    📚 Capers Jones | IEEE/CISQ | DORA DevOps
+                    ðŸ“š Capers Jones | IEEE/CISQ | DORA DevOps
                 </div>
             </div>
         </div>
@@ -789,14 +789,14 @@
         <!-- ROW 4: Model Info Footer -->
         <div style="background: rgba(155,89,182,0.08); border: 1px solid rgba(155,89,182,0.3); border-radius: 6px; padding: 8px 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
             <div style="display: flex; align-items: center; gap: 12px;">
-                <span style="color: #9b59b6; font-size: 0.75em; font-weight: bold;">📊 MODEL:</span>
+                <span style="color: #9b59b6; font-size: 0.75em; font-weight: bold;">ðŸ“Š MODEL:</span>
                 <span style="color: #888; font-size: 0.7em;">Linear Extrapolation | 12-mo Moving Avg | 12 data points | 205 defects</span>
             </div>
             <div style="display: flex; align-items: center; gap: 12px;">
-                <span style="color: #888; font-size: 0.7em; cursor: help;" title="σ (Sigma) = Standard Deviation = How spread out the monthly defect counts are from the average.&#10;&#10;CV (Coefficient of Variation) = σ/Mean × 100%&#10;= Measures relative variability&#10;&#10;Why it matters:&#10;• Low CV (<30%) = Stable data = Higher confidence&#10;• High CV (>60%) = Volatile data = Wider intervals needed">
-                    ❓ <u>σ=2.9</u> (spread) | <u>CV=65%</u> (variability)
+                <span style="color: #888; font-size: 0.7em; cursor: help;" title="Ïƒ (Sigma) = Standard Deviation = How spread out the monthly defect counts are from the average.&#10;&#10;CV (Coefficient of Variation) = Ïƒ/Mean Ã— 100%&#10;= Measures relative variability&#10;&#10;Why it matters:&#10;â€¢ Low CV (<30%) = Stable data = Higher confidence&#10;â€¢ High CV (>60%) = Volatile data = Wider intervals needed">
+                    â“ <u>Ïƒ=2.9</u> (spread) | <u>CV=65%</u> (variability)
                 </span>
-                <span style="color: #666; font-size: 0.65em;">⚠️ Use for directional guidance</span>
+                <span style="color: #666; font-size: 0.65em;">âš ï¸ Use for directional guidance</span>
                 <span style="background: rgba(46,204,113,0.2); padding: 4px 10px; border-radius: 8px; font-size: 0.7em; color: #2ecc71; font-weight: bold;">HIGH (81%)</span>
             </div>
         </div>
@@ -809,13 +809,13 @@
             <div style="display: flex; justify-content: center; margin-bottom: 12px;">
                 <div style="display: inline-flex; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border-radius: 50px; padding: 4px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
                     <button id="btnCategory" onclick="setParetoView('category')" class="pareto-btn active" style="padding: 10px 22px; border: none; border-radius: 50px; background: linear-gradient(135deg, #00d4ff, #0099cc); color: #000; font-weight: bold; cursor: pointer; transition: all 0.3s ease; margin: 0 2px; font-size: 0.9em;">
-                        📂 By Categories
+                        ðŸ“‚ By Categories
                     </button>
                     <button id="btnArea" onclick="setParetoView('area')" class="pareto-btn" style="padding: 10px 22px; border: none; border-radius: 50px; background: transparent; color: #888; font-weight: bold; cursor: pointer; transition: all 0.3s ease; margin: 0 2px; font-size: 0.9em;">
-                        📍 By Area Path
+                        ðŸ“ By Area Path
                     </button>
                     <button id="btnVersion" onclick="setParetoView('version')" class="pareto-btn" style="padding: 10px 22px; border: none; border-radius: 50px; background: transparent; color: #888; font-weight: bold; cursor: pointer; transition: all 0.3s ease; margin: 0 2px; font-size: 0.9em;">
-                        🏷️ By Version
+                        ðŸ·ï¸ By Version
                     </button>
                 </div>
             </div>
@@ -830,9 +830,9 @@
                 <!-- Cards will be dynamically updated -->
                 <div id="insight80-20" style="background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%); border-radius: 10px; padding: 12px; box-shadow: 0 3px 10px rgba(255,193,7,0.15); border-left: 4px solid #ffc107; position: relative;">
                     <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
-                        <span style="font-size: 1.1em;">🎯</span>
+                        <span style="font-size: 1.1em;">ðŸŽ¯</span>
                         <span style="font-weight: bold; color: #f57c00; font-size: 0.85em;">Focus Area</span>
-                        <span title="Pareto Principle: ~20% of causes contribute to ~80% of defects. Items are sorted by total count, and cumulative % is calculated until reaching 80%." style="cursor: help; color: #f57c00; font-size: 0.75em; margin-left: auto;">ⓘ</span>
+                        <span title="Pareto Principle: ~20% of causes contribute to ~80% of defects. Items are sorted by total count, and cumulative % is calculated until reaching 80%." style="cursor: help; color: #f57c00; font-size: 0.75em; margin-left: auto;">â“˜</span>
                     </div>
                     <div style="color: #5d4037; font-size: 0.8em; line-height: 1.4;">
                         <span id="insight80-20-text"><strong style="color: #e65100;">6</strong> items drive <strong style="color: #e65100;">80%</strong> of defects</span>
@@ -842,21 +842,21 @@
                 
                 <div id="insightPriority" style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border-radius: 10px; padding: 12px; box-shadow: 0 3px 10px rgba(76,175,80,0.15); border-left: 4px solid #4caf50; position: relative;">
                     <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
-                        <span style="font-size: 1.1em;">🚀</span>
+                        <span style="font-size: 1.1em;">ðŸš€</span>
                         <span style="font-weight: bold; color: #2e7d32; font-size: 0.85em;">Quick Win</span>
-                        <span title="The #1 ranked item by total defect count. Fixing this single category/area/version will have the highest impact on reducing your backlog." style="cursor: help; color: #2e7d32; font-size: 0.75em; margin-left: auto;">ⓘ</span>
+                        <span title="The #1 ranked item by total defect count. Fixing this single category/area/version will have the highest impact on reducing your backlog." style="cursor: help; color: #2e7d32; font-size: 0.75em; margin-left: auto;">â“˜</span>
                     </div>
                     <div id="insightPriority-text" style="color: #1b5e20; font-size: 0.8em; line-height: 1.4;">
-                        Fix <strong>HMI & Visualization</strong> • <span style="background: #4caf50; color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.9em;">63 bugs</span> <span style="color: #666;">(31%)</span>
+                        Fix <strong>HMI & Visualization</strong> â€¢ <span style="background: #4caf50; color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.9em;">63 bugs</span> <span style="color: #666;">(31%)</span>
                     </div>
                     <div id="insightPriority-detail" style="font-size: 0.7em; color: #558b2f; margin-top: 4px; border-top: 1px dashed #a5d6a7; padding-top: 4px;"><strong>Action:</strong> Schedule sprint focus on "HMI & Visualization"</div>
                 </div>
                 
                 <div id="insightEffort" style="background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); border-radius: 10px; padding: 12px; box-shadow: 0 3px 10px rgba(33,150,243,0.15); border-left: 4px solid #2196f3; position: relative;">
                     <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
-                        <span style="font-size: 1.1em;">⏱️</span>
+                        <span style="font-size: 1.1em;">â±ï¸</span>
                         <span style="font-weight: bold; color: #1565c0; font-size: 0.85em;">Clear Top 3</span>
-                        <span title="Estimated time to resolve the top 3 highest-count items. Formula: (Sum of bugs in top 3) ÷ (Monthly resolution rate). Resolution rate = 0.9 bugs/month (derived from 11 closed bugs over 12 months)." style="cursor: help; color: #1565c0; font-size: 0.75em; margin-left: auto;">ⓘ</span>
+                        <span title="Estimated time to resolve the top 3 highest-count items. Formula: (Sum of bugs in top 3) Ã· (Monthly resolution rate). Resolution rate = 0.9 bugs/month (derived from 11 closed bugs over 12 months)." style="cursor: help; color: #1565c0; font-size: 0.75em; margin-left: auto;">â“˜</span>
                     </div>
                     <div id="insightEffort-text" style="color: #0d47a1; font-size: 0.8em; line-height: 1.4;">
                         <span style="font-size: 1.4em; font-weight: bold; color: #1976d2;">140 mo</span>
@@ -864,11 +864,11 @@
                     </div>
                     <div id="insightEffort-detail" style="font-size: 0.65em; color: #1976d2; margin-top: 4px; border-top: 1px dashed #90caf9; padding-top: 4px;">
                         <div style="display: flex; justify-content: space-between;">
-                            <span>📌 HMI & Visual...: 63</span>
-                            <span>📌 Protocol & C...: 33</span>
-                            <span>📌 Redundancy &...: 32</span>
+                            <span>ðŸ“Œ HMI & Visual...: 63</span>
+                            <span>ðŸ“Œ Protocol & C...: 33</span>
+                            <span>ðŸ“Œ Redundancy &...: 32</span>
                         </div>
-                        <div style="margin-top: 3px; color: #64b5f6;">(128 bugs) ÷ (0.9/mo) = 140 months</div>
+                        <div style="margin-top: 3px; color: #64b5f6;">(128 bugs) Ã· (0.9/mo) = 140 months</div>
                     </div>
                 </div>
             </div>
@@ -882,10 +882,10 @@
             <div style="display: flex; justify-content: center; margin-bottom: 12px;">
                 <div style="display: inline-flex; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border-radius: 50px; padding: 4px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
                     <button id="btnHeatmapCategory" onclick="setHeatmapView('category')" class="heatmap-btn active" style="padding: 10px 22px; border: none; border-radius: 50px; background: linear-gradient(135deg, #00d4ff, #0099cc); color: #000; font-weight: bold; cursor: pointer; transition: all 0.3s ease; margin: 0 2px; font-size: 0.9em;">
-                        📂 Category vs Area Path
+                        ðŸ“‚ Category vs Area Path
                     </button>
                     <button id="btnHeatmapVersion" onclick="setHeatmapView('version')" class="heatmap-btn" style="padding: 10px 22px; border: none; border-radius: 50px; background: transparent; color: #888; font-weight: bold; cursor: pointer; transition: all 0.3s ease; margin: 0 2px; font-size: 0.9em;">
-                        🏷️ Category vs Version
+                        ðŸ·ï¸ Category vs Version
                     </button>
                 </div>
             </div>
@@ -899,7 +899,7 @@
             <div id="heatmapInsights" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
                 <div id="heatmapHotspot" style="background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); border-radius: 10px; padding: 12px; box-shadow: 0 3px 10px rgba(33,150,243,0.15); border-left: 4px solid #2196f3;">
                     <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
-                        <span style="font-size: 1.1em;">🔥</span>
+                        <span style="font-size: 1.1em;">ðŸ”¥</span>
                         <span style="font-weight: bold; color: #1565c0; font-size: 0.85em;">Hotspot Analysis</span>
                     </div>
                     <div id="heatmapHotspot-text" style="color: #0d47a1; font-size: 0.8em; line-height: 1.4;">
@@ -909,7 +909,7 @@
                 
                 <div id="heatmapRisk" style="background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%); border-radius: 10px; padding: 12px; box-shadow: 0 3px 10px rgba(255,193,7,0.15); border-left: 4px solid #ffc107;">
                     <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
-                        <span style="font-size: 1.1em;">⚠️</span>
+                        <span style="font-size: 1.1em;">âš ï¸</span>
                         <span style="font-weight: bold; color: #f57c00; font-size: 0.85em;">Risk Zone</span>
                     </div>
                     <div id="heatmapRisk-text" style="color: #5d4037; font-size: 0.8em; line-height: 1.4;">
@@ -926,8 +926,8 @@
             <!-- Combined Heatmap: SDLC Phase vs Test Phase -->
             <div style="flex: 1; min-height: 0; background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%); border-radius: 12px; box-shadow: 0 6px 24px rgba(0,0,0,0.12); padding: 15px; margin-bottom: 10px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                    <div style="font-weight: bold; color: #333; font-size: 1em;">📊 SDLC Phase vs Test Phase Detection Matrix</div>
-                    <div style="font-size: 0.75em; color: #666;">Standards: IEEE 12207 (SDLC) × ISTQB/IEEE 829 (Test)</div>
+                    <div style="font-weight: bold; color: #333; font-size: 1em;">ðŸ“Š SDLC Phase vs Test Phase Detection Matrix</div>
+                    <div style="font-size: 0.75em; color: #666;">Standards: IEEE 12207 (SDLC) Ã— ISTQB/IEEE 829 (Test)</div>
                 </div>
                 <div id="dimensionHeatmap" style="height: calc(100% - 30px);"></div>
             </div>
@@ -937,9 +937,9 @@
                 <!-- Process Gap Insight -->
                 <div style="background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%); border-radius: 10px; padding: 12px; box-shadow: 0 3px 10px rgba(244,67,54,0.15); border-left: 4px solid #f44336;">
                     <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
-                        <span style="font-size: 1.1em;">🔴</span>
+                        <span style="font-size: 1.1em;">ðŸ”´</span>
                         <span style="font-weight: bold; color: #c62828; font-size: 0.85em;">Critical Hotspot</span>
-                        <span title="Calculation: Find the cell with maximum bug count in the SDLC Phase × Test Phase matrix. This identifies where defects are most concentrated - bugs introduced in a specific SDLC phase and detected at a specific testing phase." style="cursor: help; color: #c62828; font-size: 0.75em; margin-left: auto;">ⓘ</span>
+                        <span title="Calculation: Find the cell with maximum bug count in the SDLC Phase Ã— Test Phase matrix. This identifies where defects are most concentrated - bugs introduced in a specific SDLC phase and detected at a specific testing phase." style="cursor: help; color: #c62828; font-size: 0.75em; margin-left: auto;">â“˜</span>
                     </div>
                     <div style="color: #b71c1c; font-size: 0.8em; line-height: 1.4;">
                         <strong>73</strong> bugs introduced in <strong>Testing</strong> found at <strong>ST (System Test)</strong>
@@ -952,9 +952,9 @@
                 <!-- Shift-Left Opportunity -->
                 <div style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border-radius: 10px; padding: 12px; box-shadow: 0 3px 10px rgba(76,175,80,0.15); border-left: 4px solid #4caf50;">
                     <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
-                        <span style="font-size: 1.1em;">⬅️</span>
+                        <span style="font-size: 1.1em;">â¬…ï¸</span>
                         <span style="font-weight: bold; color: #2e7d32; font-size: 0.85em;">Shift-Left Potential</span>
-                        <span title="Calculation: Sum of all bugs where Test Phase = 'System Test' or 'Integration Test'. These are bugs found late in the testing cycle that could potentially be caught earlier with unit/component testing. Formula: late_found = ΣSystem Test + ΣIntegration Test" style="cursor: help; color: #2e7d32; font-size: 0.75em; margin-left: auto;">ⓘ</span>
+                        <span title="Calculation: Sum of all bugs where Test Phase = 'System Test' or 'Integration Test'. These are bugs found late in the testing cycle that could potentially be caught earlier with unit/component testing. Formula: late_found = Î£System Test + Î£Integration Test" style="cursor: help; color: #2e7d32; font-size: 0.75em; margin-left: auto;">â“˜</span>
                     </div>
                     <div style="color: #1b5e20; font-size: 0.8em; line-height: 1.4;">
                         <strong>0</strong> bugs (0%) found late in System/Integration Test
@@ -967,9 +967,9 @@
                 <!-- Root Cause Focus -->
                 <div style="background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); border-radius: 10px; padding: 12px; box-shadow: 0 3px 10px rgba(33,150,243,0.15); border-left: 4px solid #2196f3;">
                     <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
-                        <span style="font-size: 1.1em;">🎯</span>
+                        <span style="font-size: 1.1em;">ðŸŽ¯</span>
                         <span style="font-weight: bold; color: #1565c0; font-size: 0.85em;">Prevention Focus</span>
-                        <span title="Calculation: Based on Defect Origin classification (Capers Jones methodology). Code = bugs from coding errors/implementation mistakes. Design = bugs from design flaws/architecture issues. Helps prioritize code quality tools vs design review improvements." style="cursor: help; color: #1565c0; font-size: 0.75em; margin-left: auto;">ⓘ</span>
+                        <span title="Calculation: Based on Defect Origin classification (Capers Jones methodology). Code = bugs from coding errors/implementation mistakes. Design = bugs from design flaws/architecture issues. Helps prioritize code quality tools vs design review improvements." style="cursor: help; color: #1565c0; font-size: 0.75em; margin-left: auto;">â“˜</span>
                     </div>
                     <div style="color: #0d47a1; font-size: 0.8em; line-height: 1.4;">
                         <strong>130</strong> bugs (63%) from Code, <strong>18</strong> (8%) from Design
@@ -983,7 +983,7 @@
     </div>
     
     <div class="footer">
-        <p>Dashboard A: Overview & Quick Win Metrics | Generated: January 16, 2026 at 12:56</p>
+        <p>Dashboard A: Overview & Quick Win Metrics | Generated: January 17, 2026 at 13:45</p>
         <p>DefectAnalyzer v4.0 | Siemens PCS7 Telecontrol</p>
     </div>
     
@@ -1094,18 +1094,18 @@
                 { 
                     x: xLabels, 
                     y: sev3Data, 
-                    name: '🟠 Severity 3 (Medium)', 
+                    name: 'ðŸŸ  Severity 3 (Medium)', 
                     type: 'bar', 
                     marker: { 
                         color: sev3Data.map((v, i) => i === 0 ? '#ff8a65' : '#ffab91'),
                         line: { color: '#ff7043', width: 1 }
                     },
-                    hovertemplate: '<b>%{x}</b><br><span style="color:#ff7043">●</span> Severity 3: <b>%{y}</b><extra></extra>'
+                    hovertemplate: '<b>%{x}</b><br><span style="color:#ff7043">â—</span> Severity 3: <b>%{y}</b><extra></extra>'
                 },
                 { 
                     x: xLabels, 
                     y: sev2Data, 
-                    name: '🔴 Severity 2 (High)', 
+                    name: 'ðŸ”´ Severity 2 (High)', 
                     type: 'bar', 
                     text: totals.map(t => t > 0 ? t : ''),
                     textposition: 'outside',
@@ -1114,13 +1114,13 @@
                         color: sev2Data.map((v, i) => i === 0 ? '#b71c1c' : '#e53935'),
                         line: { color: '#b71c1c', width: 1 }
                     },
-                    hovertemplate: '<b>%{x}</b><br><span style="color:#e53935">●</span> Severity 2: <b>%{y}</b><br>Total: %{customdata}<extra></extra>',
+                    hovertemplate: '<b>%{x}</b><br><span style="color:#e53935">â—</span> Severity 2: <b>%{y}</b><br>Total: %{customdata}<extra></extra>',
                     customdata: totals
                 },
                 { 
                     x: xLabels, 
                     y: cumPct, 
-                    name: '📈 Cumulative %', 
+                    name: 'ðŸ“ˆ Cumulative %', 
                     type: 'scatter', 
                     mode: 'lines+markers+text', 
                     text: cumPct.map((v, i) => i % 2 === 0 || i === cumPct.length - 1 ? v.toFixed(0) + '%' : ''),
@@ -1129,7 +1129,7 @@
                     yaxis: 'y2', 
                     line: { color: '#1976d2', width: 4, shape: 'spline' }, 
                     marker: { size: 10, color: '#1976d2', line: { color: '#fff', width: 2 } },
-                    hovertemplate: '<b>%{x}</b><br>📊 Cumulative: <b>%{y:.1f}%</b><extra></extra>'
+                    hovertemplate: '<b>%{x}</b><br>ðŸ“Š Cumulative: <b>%{y:.1f}%</b><extra></extra>'
                 }
             ], {
                 barmode: 'stack',
@@ -1200,7 +1200,7 @@
             const topPct = totalSum > 0 ? Math.round((topCount / totalSum) * 100) : 0;
             const truncatedTop = topItem.length > 20 ? topItem.substring(0, 20) + '...' : topItem;
             document.getElementById('insightPriority-text').innerHTML = 
-                'Fix <strong>' + topItem + '</strong> • <span style="background: #4caf50; color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.9em;">' + topCount + ' bugs</span> <span style="color: #666;">(' + topPct + '%)</span>';
+                'Fix <strong>' + topItem + '</strong> â€¢ <span style="background: #4caf50; color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.9em;">' + topCount + ' bugs</span> <span style="color: #666;">(' + topPct + '%)</span>';
             document.getElementById('insightPriority-detail').innerHTML = 
                 '<strong>Action:</strong> Schedule sprint focus on "' + truncatedTop + '"';
             
@@ -1227,9 +1227,9 @@
                 '<span style="color: #1565c0; margin-left: 8px;">in top 3 (' + top3Pct + '% of backlog)</span>';
             document.getElementById('insightEffort-detail').innerHTML =
                 '<div style="display: flex; justify-content: space-between; font-size: 0.95em;">' +
-                '<span>📌 ' + item1 + ': ' + count1 + '</span>' +
-                '<span>📌 ' + item2 + ': ' + count2 + '</span>' +
-                '<span>📌 ' + item3 + ': ' + count3 + '</span>' +
+                '<span>ðŸ“Œ ' + item1 + ': ' + count1 + '</span>' +
+                '<span>ðŸ“Œ ' + item2 + ': ' + count2 + '</span>' +
+                '<span>ðŸ“Œ ' + item3 + ': ' + count3 + '</span>' +
                 '</div>' +
                 '<div style="margin-top: 3px; color: #1976d2;"><strong>Next Step:</strong> Triage top ' + priorityBugs + ' bugs in "' + item1 + '" this sprint</div>';
         }
@@ -1259,12 +1259,12 @@
                 <div class="modal" onclick="this.remove()">
                     <div class="modal-content" onclick="event.stopPropagation()">
                         <div class="modal-header">
-                            <h2 style="color: #2c3e50;">🔍 ${title} (${bugs.length} defects)</h2>
+                            <h2 style="color: #2c3e50;">ðŸ” ${title} (${bugs.length} defects)</h2>
                             <div style="display: flex; gap: 10px;">
                                 <button onclick="exportBugsToCSV()" style="background: linear-gradient(135deg, #4caf50, #388e3c); color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: bold; display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 8px rgba(76,175,80,0.3);">
-                                    📥 Export CSV
+                                    ðŸ“¥ Export CSV
                                 </button>
-                                <button class="modal-close" onclick="document.querySelector('.modal').remove()">✖ Close</button>
+                                <button class="modal-close" onclick="document.querySelector('.modal').remove()">âœ– Close</button>
                             </div>
                         </div>
                         <table class="bug-table">
@@ -1452,7 +1452,7 @@
             
             // Update insight cards
             document.getElementById('heatmapHotspot-text').innerHTML = 
-                'Top hotspot: <strong>' + maxY + '</strong> × <strong>' + maxX + '</strong> with <span style="background: #c53030; color: white; padding: 2px 6px; border-radius: 8px;">' + maxVal + ' bugs</span>';
+                'Top hotspot: <strong>' + maxY + '</strong> Ã— <strong>' + maxX + '</strong> with <span style="background: #c53030; color: white; padding: 2px 6px; border-radius: 8px;">' + maxVal + ' bugs</span>';
             
             Plotly.react('heatmapChart', [{
                 z: zData,
@@ -1501,7 +1501,7 @@
                     // Category vs Area Path
                     const cellKey = xValue + '|' + yValue;
                     bugData = heatmapBugData[cellKey] || [];
-                    title = xValue + ' × ' + yValue;
+                    title = xValue + ' Ã— ' + yValue;
                 } else {
                     // Category vs Version  
                     const cellKey = xValue + '|' + yValue;
@@ -1566,7 +1566,7 @@
                 const bugData = dimensionBugData[cellKey] || [];
                 
                 if (bugData.length > 0) {
-                    const title = 'SDLC: ' + sdlcPhase + ' → Test: ' + testPhase;
+                    const title = 'SDLC: ' + sdlcPhase + ' â†’ Test: ' + testPhase;
                     showBugModal(title, bugData);
                 }
             });
