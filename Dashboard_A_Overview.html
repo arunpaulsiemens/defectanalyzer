@@ -1217,20 +1217,21 @@
             const count2 = totals[1] || 0;
             const count3 = totals[2] || 0;
             
-            // Calculate recommended team size
-            const targetMonths = 3;
-            const devNeeded = resRate > 0 ? Math.ceil(top3Sum / (resRate * targetMonths)) : 1;
-            
-            document.getElementById('insightEffort-text').innerHTML = 
-                '<span style="font-size: 1.4em; font-weight: bold; color: #1976d2;">' + months + ' mo</span>' +
-                '<span style="color: #1565c0; margin-left: 8px;">to clear ' + top3Sum + ' bugs (' + top3Pct + '%)</span>';
-            document.getElementById('insightEffort-detail').innerHTML = 
+            // Calculate realistic weekly target
+            const weeksToReview = 4;
+            const bugsPerWeek = Math.ceil(top3Sum / 12); // Spread over 12 weeks (3 months)
+            const priorityBugs = Math.min(count1, 10); // Focus on top 10 from #1 category
+
+            document.getElementById('insightEffort-text').innerHTML =
+                '<span style="font-size: 1.4em; font-weight: bold; color: #1976d2;">' + top3Sum + ' bugs</span>' +
+                '<span style="color: #1565c0; margin-left: 8px;">in top 3 (' + top3Pct + '% of backlog)</span>';
+            document.getElementById('insightEffort-detail').innerHTML =
                 '<div style="display: flex; justify-content: space-between; font-size: 0.95em;">' +
                 '<span>📌 ' + item1 + ': ' + count1 + '</span>' +
                 '<span>📌 ' + item2 + ': ' + count2 + '</span>' +
                 '<span>📌 ' + item3 + ': ' + count3 + '</span>' +
                 '</div>' +
-                '<div style="margin-top: 3px; color: #1976d2;"><strong>Action:</strong> Need ' + devNeeded + ' dev(s) to clear in 3 months</div>';
+                '<div style="margin-top: 3px; color: #1976d2;"><strong>Next Step:</strong> Triage top ' + priorityBugs + ' bugs in "' + item1 + '" this sprint</div>';
         }
         
         // Create bug modal with export button
