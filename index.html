@@ -1,10 +1,285 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta http-equiv="refresh" content="0; url=Dashboard_A_Overview.html">
-    <title>DefectAnalyzer</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DefectAnalyzer - Siemens PCS7 Telecontrol</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 40px 20px 30px;
+            border-bottom: 2px solid #00d4ff;
+        }
+        
+        .logo {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+        
+        .header h1 {
+            color: #00d4ff;
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+        }
+        
+        .header p {
+            color: #888;
+            font-size: 1.1em;
+        }
+        
+        .main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+        
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            max-width: 1200px;
+            width: 100%;
+        }
+        
+        .dashboard-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 35px 30px;
+            text-align: center;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .dashboard-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--card-color), transparent);
+        }
+        
+        .dashboard-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border-color: var(--card-color);
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        .card-a { --card-color: #00d4ff; }
+        .card-b { --card-color: #ff6b6b; }
+        .card-c { --card-color: #2ecc71; }
+        
+        .card-icon {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+        }
+        
+        .card-title {
+            font-size: 1.4em;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--card-color);
+        }
+        
+        .card-subtitle {
+            color: #aaa;
+            font-size: 0.95em;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        
+        .card-features {
+            text-align: left;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            font-size: 0.85em;
+        }
+        
+        .card-features li {
+            list-style: none;
+            padding: 5px 0;
+            color: #ccc;
+        }
+        
+        .card-features li::before {
+            content: '✓ ';
+            color: var(--card-color);
+            font-weight: bold;
+        }
+        
+        .card-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 30px;
+            background: var(--card-color);
+            color: #1a1a2e;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.95em;
+            transition: all 0.3s ease;
+        }
+        
+        .dashboard-card:hover .card-button {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 25px;
+            border-top: 1px solid #333;
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        .footer a {
+            color: #00d4ff;
+            text-decoration: none;
+        }
+        
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            margin-top: 20px;
+            border-radius: 10px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #00d4ff;
+        }
+        
+        .stat-label {
+            font-size: 0.8em;
+            color: #888;
+            margin-top: 5px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 900px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+                max-width: 400px;
+            }
+            
+            .header h1 {
+                font-size: 1.6em;
+            }
+            
+            .stats-bar {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <p>Redirecting to <a href="Dashboard_A_Overview.html">Dashboard A</a>...</p>
+    <div class="header">
+        <div class="logo">🔍</div>
+        <h1>DefectAnalyzer</h1>
+        <p>AI-Powered Defect Intelligence for Siemens PCS7 Telecontrol</p>
+        
+        <div class="stats-bar">
+            <div class="stat-item">
+                <div class="stat-value">205</div>
+                <div class="stat-label">Total Defects</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">15</div>
+                <div class="stat-label">Categories</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">41.7%</div>
+                <div class="stat-label">Escape Rate</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">72</div>
+                <div class="stat-label">Risk Score</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="main">
+        <div class="dashboard-grid">
+            <!-- Dashboard A -->
+            <a href="Dashboard_A_Overview.html" class="dashboard-card card-a">
+                <div class="card-icon">📊</div>
+                <div class="card-title">Dashboard A</div>
+                <div class="card-subtitle">Overview & Quick Win Metrics</div>
+                <ul class="card-features">
+                    <li>KPI Summary & Forecasts</li>
+                    <li>Category Pareto Analysis</li>
+                    <li>Area Heatmap</li>
+                    <li>Classification Dimensions</li>
+                </ul>
+                <div class="card-button">Open Dashboard →</div>
+            </a>
+            
+            <!-- Dashboard B -->
+            <a href="Dashboard_B_Consolidated.html" class="dashboard-card card-b">
+                <div class="card-icon">🔍</div>
+                <div class="card-title">Dashboard B</div>
+                <div class="card-subtitle">Root Cause Analysis</div>
+                <ul class="card-features">
+                    <li>Root Cause Categories</li>
+                    <li>Impact Assessment</li>
+                    <li>Detailed Bug Explorer</li>
+                    <li>Trend Analysis</li>
+                </ul>
+                <div class="card-button">Open Dashboard →</div>
+            </a>
+            
+            <!-- Configuration -->
+            <a href="DefectAnalyzer_Config.html" class="dashboard-card card-c">
+                <div class="card-icon">⚙️</div>
+                <div class="card-title">Configuration</div>
+                <div class="card-subtitle">Setup & Data Connection</div>
+                <ul class="card-features">
+                    <li>Azure DevOps Connection</li>
+                    <li>Query Configuration</li>
+                    <li>Category Mapping</li>
+                    <li>Export Settings</li>
+                </ul>
+                <div class="card-button">Open Config →</div>
+            </a>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p>DefectAnalyzer v4.0 | Siemens PCS7 Telecontrol | January 2026</p>
+        <p style="margin-top: 8px;">Built with ❤️ by the Quality Engineering Team</p>
+    </div>
 </body>
 </html>
