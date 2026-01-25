@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DefectAnalyzer - Siemens PCS7 Telecontrol</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        html {
+            font-size: clamp(12px, 1.2vw, 16px);
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            background: rgba(0,0,0,0.3);
+            padding: clamp(15px, 3vh, 30px) clamp(20px, 4vw, 50px);
+            border-bottom: 3px solid #00d4ff;
+            text-align: center;
+        }
+        
+        .header h1 {
+            color: #00d4ff;
+            font-size: clamp(1.5em, 4vw, 2.5em);
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px rgba(0,212,255,0.5);
+        }
+        
+        .header p {
+            color: #888;
+            font-size: clamp(0.85em, 1.5vw, 1.1em);
+        }
+        
+        .container {
+            flex: 1;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: clamp(20px, 4vh, 60px) clamp(15px, 3vw, 30px);
+            width: 100%;
+        }
+        
+        .hero-section {
+            text-align: center;
+            margin-bottom: clamp(30px, 5vh, 60px);
+        }
+        
+        .hero-section h2 {
+            font-size: clamp(1.3em, 3vw, 2em);
+            margin-bottom: 15px;
+            color: #fff;
+        }
+        
+        .hero-section .subtitle {
+            font-size: clamp(0.9em, 1.5vw, 1.2em);
+            color: #888;
+            margin-bottom: clamp(15px, 2vh, 30px);
+        }
+        
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: clamp(15px, 2vw, 30px);
+            margin-bottom: clamp(25px, 4vh, 50px);
+        }
+        
+        .dashboard-card {
+            background: rgba(255,255,255,0.05);
+            border: 2px solid rgba(0,212,255,0.3);
+            border-radius: clamp(12px, 1.5vw, 20px);
+            padding: clamp(20px, 3vw, 40px);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .dashboard-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #00d4ff, #7c3aed);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+        
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            border-color: #00d4ff;
+            box-shadow: 0 10px 30px rgba(0,212,255,0.3);
+        }
+        
+        .dashboard-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .dashboard-icon {
+            font-size: clamp(2em, 4vw, 3em);
+            margin-bottom: clamp(10px, 1.5vh, 20px);
+        }
+        
+        .dashboard-title {
+            font-size: clamp(1.1em, 2vw, 1.8em);
+            color: #00d4ff;
+            margin-bottom: clamp(8px, 1vh, 15px);
+        }
+        
+        .dashboard-description {
+            color: #aaa;
+            line-height: 1.6;
+            margin-bottom: clamp(10px, 1.5vh, 20px);
+            font-size: clamp(0.85em, 1.1vw, 1em);
+        }
+        
+        .dashboard-features {
+            list-style: none;
+            margin: clamp(10px, 1.5vh, 20px) 0;
+            padding: 0;
+        }
+        
+        .dashboard-features li {
+            padding: clamp(4px, 0.5vh, 8px) 0;
+            color: #888;
+            display: flex;
+            align-items: center;
+            font-size: clamp(0.8em, 1vw, 1em);
+        }
+        
+        .dashboard-features li::before {
+            content: '✓';
+            color: #2ecc71;
+            font-weight: bold;
+            margin-right: clamp(6px, 0.8vw, 10px);
+            font-size: 1.1em;
+        }
+        
+        .btn-launch {
+            display: inline-block;
+            background: linear-gradient(135deg, #00d4ff, #7c3aed);
+            color: white;
+            padding: clamp(10px, 1.5vh, 15px) clamp(25px, 3vw, 40px);
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: clamp(0.9em, 1.2vw, 1.1em);
+            transition: all 0.3s ease;
+            margin-top: clamp(5px, 1vh, 10px);
+        }
+        
+        .btn-launch:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(0,212,255,0.4);
+        }
+        
+        .config-section {
+            background: rgba(255,255,255,0.05);
+            border: 2px solid rgba(155,89,182,0.3);
+            border-radius: clamp(12px, 1.5vw, 20px);
+            padding: clamp(20px, 3vw, 40px);
+            text-align: center;
+        }
+        
+        .config-section h3 {
+            color: #9b59b6;
+            font-size: clamp(1.2em, 2vw, 1.8em);
+            margin-bottom: clamp(8px, 1vh, 15px);
+        }
+        
+        .config-section p {
+            color: #aaa;
+            margin-bottom: clamp(15px, 2vh, 25px);
+            line-height: 1.6;
+            font-size: clamp(0.85em, 1.1vw, 1em);
+        }
+        
+        .btn-config {
+            display: inline-block;
+            background: linear-gradient(135deg, #9b59b6, #e74c3c);
+            color: white;
+            padding: clamp(10px, 1.5vh, 15px) clamp(25px, 3vw, 40px);
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: clamp(0.9em, 1.2vw, 1.1em);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-config:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(155,89,182,0.4);
+        }
+        
+        .footer {
+            background: rgba(0,0,0,0.3);
+            padding: clamp(15px, 2vh, 30px);
+            text-align: center;
+            color: #666;
+            border-top: 1px solid #333;
+        }
+        
+        .footer p {
+            margin: 5px 0;
+            font-size: clamp(0.75em, 1vw, 0.9em);
+        }
+        
+        .status-badge {
+            display: inline-block;
+            background: rgba(46,204,113,0.2);
+            color: #2ecc71;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: clamp(0.75em, 1vw, 0.9em);
+            margin-left: 10px;
+        }
+        
+        /* Prevent overflow */
+        body {
+            overflow-x: hidden;
+            max-width: 100vw;
+        }
+        
+        /* Large screens (1400px+) */
+        @media (min-width: 1400px) {
+            html { font-size: 16px; }
+        }
+        
+        /* Medium-large screens (1200px - 1400px) */
+        @media (max-width: 1400px) {
+            html { font-size: 14px; }
+            .container { max-width: 100%; padding: 30px 20px; }
+        }
+        
+        /* Small laptops - CRITICAL (1024px - 1200px) */
+        @media (max-width: 1200px) {
+            html { font-size: 13px; }
+            .dashboard-cards {
+                gap: 15px;
+            }
+            .dashboard-card {
+                padding: 20px;
+            }
+            .dashboard-features li {
+                font-size: 0.9em;
+            }
+        }
+        
+        /* Very small laptops (900px - 1024px) */
+        @media (max-width: 1024px) {
+            html { font-size: 12px; }
+            .header { padding: 12px 15px; }
+            .header h1 { font-size: 1.4em; }
+            .dashboard-cards {
+                gap: 12px;
+            }
+            .dashboard-card {
+                padding: 18px;
+            }
+        }
+        
+        /* Tablets / Very small laptops (768px - 900px) */
+        @media (max-width: 900px) {
+            html { font-size: 12px; }
+            .dashboard-cards {
+                grid-template-columns: 1fr;
+                max-width: 600px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .dashboard-card {
+                padding: 25px;
+            }
+            .dashboard-features li {
+                font-size: 0.95em;
+            }
+        }
+        
+        /* Mobile (below 768px) */
+        @media (max-width: 768px) {
+            html { font-size: 14px; }
+            
+            .header {
+                padding: 20px 15px;
+            }
+            
+            .header h1 {
+                font-size: 1.6em;
+            }
+            
+            .container {
+                padding: 20px 15px;
+            }
+            
+            .hero-section {
+                margin-bottom: 25px;
+            }
+            
+            .hero-section h2 {
+                font-size: 1.4em;
+            }
+            
+            .dashboard-cards {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .dashboard-card {
+                padding: 20px;
+            }
+            
+            .dashboard-icon {
+                font-size: 2em;
+            }
+            
+            .dashboard-title {
+                font-size: 1.3em;
+            }
+            
+            .btn-launch, .btn-config {
+                padding: 12px 30px;
+                font-size: 1em;
+            }
+            
+            .config-section {
+                padding: 25px 20px;
+            }
+        }
+        
+        /* Small mobile (below 480px) */
+        @media (max-width: 480px) {
+            html { font-size: 13px; }
+            
+            .header h1 {
+                font-size: 1.4em;
+            }
+            
+            .dashboard-card {
+                padding: 18px;
+            }
+            
+            .dashboard-features li {
+                font-size: 0.9em;
+                padding: 5px 0;
+            }
+            
+            .btn-launch, .btn-config {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📊 DefectAnalyzer</h1>
+        <p>Siemens PCS7 Telecontrol - Advanced Defect Analysis Platform</p>
+    </div>
+    
+    <div class="container">
+        <div class="hero-section">
+            <h2>Interactive Defect Analysis Dashboards</h2>
+            <p class="subtitle">Real-time insights with embedded sample data from 208 defects analyzed</p>
+            <span class="status-badge">🟢 Live & Ready</span>
+        </div>
+        
+        <div class="dashboard-cards">
+            <!-- Dashboard A -->
+            <div class="dashboard-card" onclick="window.location.href='Dashboard_Distribution_Analysis.html'">
+                <div class="dashboard-icon">📊</div>
+                <h3 class="dashboard-title">Distribution Analysis</h3>
+                <p class="dashboard-description">
+                    Defect distribution by Category, Area & Severity with quick-win KPIs, trend forecasting, and multi-dimensional analysis.
+                </p>
+                <ul class="dashboard-features">
+                    <li>Escape Rate & Aging Analysis</li>
+                    <li>Backlog Forecasting (6-month projection)</li>
+                    <li>Category Pareto Charts (80/20 rule)</li>
+                    <li>Area vs Category Heatmaps</li>
+                    <li>SDLC & Test Phase Dimensions</li>
+                    <li>Risk Scoring & Model Confidence</li>
+                </ul>
+                <a href="Dashboard_Distribution_Analysis.html" class="btn-launch">Launch Distribution Analysis →</a>
+            </div>
+            
+            <!-- Dashboard B -->
+            <div class="dashboard-card" onclick="window.location.href='Dashboard_Classification_Analysis.html'">
+                <div class="dashboard-icon">🔬</div>
+                <h3 class="dashboard-title">Classification Analysis</h3>
+                <p class="dashboard-description">
+                    Deep-dive analysis using ODC (Orthogonal Defect Classification) and IEEE methodologies.
+                </p>
+                <ul class="dashboard-features">
+                    <li>ODC × IEEE Classification Matrix</li>
+                    <li>Cause Pareto Analysis (80/20)</li>
+                    <li>Cause × Category Heatmap</li>
+                    <li>Interactive Category Filtering</li>
+                    <li>Drill-down Bug Details (205 classified)</li>
+                    <li>Industry-Standard Taxonomies</li>
+                </ul>
+                <a href="Dashboard_Classification_Analysis.html" class="btn-launch">Launch Classification Analysis →</a>
+            </div>
+        </div>
+        
+        <div class="config-section">
+            <h3>🔧 Configure Live Data Connection</h3>
+            <p>
+                Want to analyze YOUR TFS/Azure DevOps data? Configure your connection to pull live defects from your project.
+                <br><br>
+                <strong>Note:</strong> Configuration requires Python setup. The dashboards above work standalone with embedded sample data.
+            </p>
+            <a href="DefectAnalyzer_Config.html" class="btn-config">Configure TFS Connection →</a>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p><strong>DefectAnalyzer v4.0</strong> | Siemens PCS7 Telecontrol</p>
+        <p>Generated: January 21, 2026 | Sample Data: 208 Defects (Severity 2 & 3)</p>
+        <p style="margin-top: 15px; font-size: 0.9em;">
+            📈 Powered by Plotly.js | 🤖 LLM-Enhanced Classification | 📊 Industry Best Practices
+        </p>
+    </div>
+</body>
+</html>
